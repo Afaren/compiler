@@ -1,4 +1,3 @@
-package test;
 
 import afar.lexer.Token;
 import junit.framework.TestCase;
@@ -38,13 +37,13 @@ public class TokenTest extends TestCase {
 
     }
 
-    public void testContainSign() throws Exception {
+    public void testTokenContainsSign() throws Exception {
         final String STAR = "*";
         assertTrue("Token should contains * as a sign", Token.contains(STAR));
 
     }
 
-    public void testContainReservedWordProgram() throws Exception {
+    public void testTokenContainsReservedWordProgram() throws Exception {
         final String PROGRAM = "program";
         assertTrue("Token should contains program as a reserved word", Token.contains(PROGRAM));
     }
@@ -53,22 +52,22 @@ public class TokenTest extends TestCase {
         final String INT_CONSTANT  = "100";
         final String DOUBLE_CONSTANT = "100.10";
         Token double_constant_token = new Token(DOUBLE_CONSTANT);
-        assertTrue("double constant is legal token", double_constant_token.islegalToken());
+        assertTrue("double constant is legal token", double_constant_token.isLegalToken());
         Token  int_constant_token= new Token(INT_CONSTANT);
-        assertTrue("int constant is legal token", int_constant_token.islegalToken());
+        assertTrue("int constant is legal token", int_constant_token.isLegalToken());
     }
 
     public void testIllegalConstant() throws Exception {
         final String BAD_INT_CONSTANT  = "100.x";
         final String BAD_DOUBLE_CONSTANT = "100.10x";
         Token double_constant_token = new Token(BAD_DOUBLE_CONSTANT);
-        assertFalse("bad double token", double_constant_token.islegalToken());
+        assertFalse("bad double token", double_constant_token.isLegalToken());
         Token  int_constant_token= new Token(BAD_INT_CONSTANT);
-        assertFalse("bad int token", int_constant_token.islegalToken());
+        assertFalse("bad int token", int_constant_token.isLegalToken());
 
     }
 
-    public void testIllegalword() throws Exception {
+    public void testIllegalWord() throws Exception {
         final String ILLEGAL_WORD_1 = "2323xxx";
         final String ILLEGAL_WORD_2 = "1x2x";
         final String ILLEGAL_WORD_3 = "x**";
@@ -77,22 +76,21 @@ public class TokenTest extends TestCase {
         final String LEGAL_WORD_3 = "x33xx";
 
         Token illegalToken_1 = new Token(ILLEGAL_WORD_1);
-        assertFalse(ILLEGAL_WORD_1 + " is an illegal token", illegalToken_1.islegalToken());
+        assertFalse(ILLEGAL_WORD_1 + " is an illegal token", illegalToken_1.isLegalToken());
 
         Token illegalToken_2 = new Token(ILLEGAL_WORD_2);
-        assertFalse(ILLEGAL_WORD_2 + " is an illegal token", illegalToken_2.islegalToken());
+        assertFalse(ILLEGAL_WORD_2 + " is an illegal token", illegalToken_2.isLegalToken());
 
         Token illegalToken_contain_star = new Token(ILLEGAL_WORD_3);
-        assertFalse("token can not contains star", illegalToken_contain_star.islegalToken());
+        assertFalse("token can not contains star", illegalToken_contain_star.isLegalToken());
 
         Token legalToken_1 = new Token(LEGAL_WORD_1);
-        assertTrue(LEGAL_WORD_1 + " is a legal token", legalToken_1.islegalToken());
+        assertTrue(LEGAL_WORD_1 + " is a legal token", legalToken_1.isLegalToken());
 
         Token legalToken_2 = new Token(LEGAL_WORD_2);
-        assertTrue(LEGAL_WORD_2 + " is a legal token", legalToken_2.islegalToken());
+        assertTrue(LEGAL_WORD_2 + " is a legal token", legalToken_2.isLegalToken());
 
         Token legalToken_3 = new Token(LEGAL_WORD_1);
-        assertTrue(LEGAL_WORD_3 + " is a legal token", legalToken_3.islegalToken());
+        assertTrue(LEGAL_WORD_3 + " is a legal token", legalToken_3.isLegalToken());
     }
-//    }
 }

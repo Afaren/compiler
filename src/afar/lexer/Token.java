@@ -11,6 +11,15 @@ public class Token {
     private String tokenValue;
     private String tokenType;
 
+    @Override
+    public String toString() {
+        return "Token{" +
+                "token='" + token + '\'' +
+                ", tokenValue='" + tokenValue + '\'' +
+                ", tokenType='" + tokenType + '\'' +
+                '}';
+    }
+
     //   reserved word: PROGRAM, BEGIN, END, VAR, INTEGER, WHILE, IF, THEN, ELSE, DO, PROCEDUCE
     public static ArrayList<String> reservedWordDirectory;
 
@@ -57,23 +66,53 @@ public class Token {
         signDirectory.add("$");
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Token token1 = (Token) o;
+
+        if (!token.equals(token1.token)) return false;
+        if (!tokenValue.equals(token1.tokenValue)) return false;
+        return tokenType.equals(token1.tokenType);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = token.hashCode();
+        result = 31 * result + tokenValue.hashCode();
+        result = 31 * result + tokenType.hashCode();
+        return result;
+    }
+
     public Token(String str) {
         this.token = str;
-        if (islegalToken()) {
+        if (isLegalToken()) {
             if (isReserved(str)) {
                 this.tokenValue = str;
                 this.tokenType = "reserved";
-            } else if(isIdentifier()){
+            } else if (isIdentifier()) {
                 this.tokenValue = token;
                 this.tokenType = "identifier";
-            }else if(isConstant()){
+            } else if (isConstant()) {
                 this.tokenValue = token;
                 this.tokenType = "constant";
             }
         }
     }
 
+    public static boolean contains(String str) {
+//        boolean isAReservedWord = reservedWordDirectory.contains(str);
+//        boolean isASign = signDirectory.contains(str);
+//        if (isAReservedWord || isASign) {
+//            return true;
+//        }
+//        return false;
+        return isReserved(str) || isSign(str);
 
+    }
 
     public String getTokenType() {
         return tokenType;
@@ -83,25 +122,26 @@ public class Token {
         return tokenValue;
     }
 
-    private boolean isConstant() {
-        String constantPatter = "^[\\d]+[\\.]?[\\d]*$";
-        boolean isLegalConstant = Pattern.matches(constantPatter, token);
-        return isLegalConstant;
-    }
-
-    public boolean islegalToken() {
+    public boolean isLegalToken() {
 
 //        check if it is a identifier or constant
 //        String constantPatter = "[1-9]*\\.[0-9]*$";
 //        [+-]?[\d]+[\.]?[\d]*$
-        if (isIdentifier()|| isConstant()) {
-           return true;
+        if (isIdentifier() || isConstant()) {
+            return true;
         }
 //        if (isLegalIdentifier || isLegalConstant) {
 //            return true;
 //        }
         return false;
     }
+
+    private boolean isConstant() {
+        String constantPatter = "^[\\d]+[\\.]?[\\d]*$";
+        boolean isLegalConstant = Pattern.matches(constantPatter, token);
+        return isLegalConstant;
+    }
+
 
     private boolean isIdentifier() {
         String identifierPatter = "^[a-zA-Z][0-9a-zA-Z]*$";
@@ -115,16 +155,6 @@ public class Token {
 
     private static boolean isSign(String str) {
         return signDirectory.contains(str);
-    }
-    public static boolean contains(String str) {
-//        boolean isAReservedWord = reservedWordDirectory.contains(str);
-//        boolean isASign = signDirectory.contains(str);
-//        if (isAReservedWord || isASign) {
-//            return true;
-//        }
-//        return false;
-        return isReserved(str) || isSign(str);
-
     }
 
 
