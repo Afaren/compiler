@@ -1,5 +1,5 @@
+package afar.lexer;
 
-import afar.lexer.Token;
 import junit.framework.TestCase;
 
 /**
