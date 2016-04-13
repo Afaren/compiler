@@ -37,33 +37,50 @@ public class TokenTest extends TestCase {
 
     }
 
-    public void testTokenContainsSign() throws Exception {
-        final String STAR = "*";
-        assertTrue("Token should contains * as a sign", Token.contains(STAR));
+//    public void testTokenContainsSign() throws Exception {
+//        final String STAR = "*";
+//        assertTrue("Token should contains * as a sign", Token.contains(STAR));
+//    }
 
-    }
-
-    public void testTokenContainsReservedWordProgram() throws Exception {
-        final String PROGRAM = "program";
-        assertTrue("Token should contains program as a reserved word", Token.contains(PROGRAM));
-    }
+//    public void testTokenContainsReservedWordProgram() throws Exception {
+//        final String PROGRAM = "program";
+//        assertTrue("Token should contains program as a reserved word", Token.contains(PROGRAM));
+//    }
 
     public void testLegalConstant() throws Exception {
-        final String INT_CONSTANT  = "100";
+        final String INT_CONSTANT = "100";
         final String DOUBLE_CONSTANT = "100.10";
         Token double_constant_token = new Token(DOUBLE_CONSTANT);
         assertTrue("double constant is legal token", double_constant_token.isLegalToken());
-        Token  int_constant_token= new Token(INT_CONSTANT);
+        Token int_constant_token = new Token(INT_CONSTANT);
         assertTrue("int constant is legal token", int_constant_token.isLegalToken());
     }
 
     public void testIllegalConstant() throws Exception {
-        final String BAD_INT_CONSTANT  = "100.x";
+        final String BAD_INT_CONSTANT = "100.x";
         final String BAD_DOUBLE_CONSTANT = "100.10x";
         Token double_constant_token = new Token(BAD_DOUBLE_CONSTANT);
         assertFalse("bad double token", double_constant_token.isLegalToken());
-        Token  int_constant_token= new Token(BAD_INT_CONSTANT);
+        Token int_constant_token = new Token(BAD_INT_CONSTANT);
         assertFalse("bad int token", int_constant_token.isLegalToken());
+
+    }
+
+    public void testSignAsLegalToken() throws Exception {
+        final String sign_1 = ";";
+        final String sign_2 = "*";
+        final String sign_3 = ".";
+        final String sign_4 = "=";
+        Token sign_token_1 = new Token(sign_1);
+        Token sign_token_2 = new Token(sign_2);
+        Token sign_token_3 = new Token(sign_3);
+        Token sign_token_4 = new Token(sign_4);
+        boolean legal_1 = sign_token_1.isLegalToken();
+        boolean legal_2 = sign_token_2.isLegalToken();
+        boolean legal_3 = sign_token_3.isLegalToken();
+        boolean legal_4 = sign_token_4.isLegalToken();
+
+        assertTrue("; * . = these signs are legal token", legal_1 && legal_2 && legal_3 && legal_4);
 
     }
 

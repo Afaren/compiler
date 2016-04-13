@@ -26,6 +26,17 @@ public class Lexer {
         // 4. 不合法，进行进一步的处理，细分
 
         String[] words = source.split(" ");
+//        ArrayList<String> words_step_2 = new ArrayList<>();
+//        for (String wordNeedToProcessOneStepMore  : words) {
+//            String[] temp = wordNeedToProcessOneStepMore.split("^[a-zA-Z]*$");
+//            for (String word : temp) {
+//                Token current = new Token(word);
+//                if (current.isLegalToken()) {
+//                    tokenDirectory.add(current);
+//                }
+//            }
+//            return tokenDirectory;
+//        }
         //单纯用空格来分割，无法得到end.及;，暂时不知道为什么，;前后都有空格，却无法识别
         //需要更精确的正则表达式
         for (String word : words) {
@@ -33,7 +44,6 @@ public class Lexer {
             if (current.isLegalToken()) {
                 tokenDirectory.add(current);
             }
-
         }
         return tokenDirectory;
 

@@ -7,21 +7,18 @@ import java.util.regex.Pattern;
  * Created by Afar on 2016/4/10.
  */
 public class Token {
-    String token;
-    private String tokenValue;
+    private String token;
     private String tokenType;
+    private String tokenValue;
 
-    @Override
-    public String toString() {
-        return "Token{" +
-                "token='" + token + '\'' +
-                ", tokenValue='" + tokenValue + '\'' +
-                ", tokenType='" + tokenType + '\'' +
-                '}';
-    }
+    private boolean isLegalSign;
+    private boolean isLegalConstant;
+    private boolean isLegalIdentifier;
+    private boolean isLegalReservedWord;
+
 
     //   reserved word: PROGRAM, BEGIN, END, VAR, INTEGER, WHILE, IF, THEN, ELSE, DO, PROCEDUCE
-    public static ArrayList<String> reservedWordDirectory;
+    private static ArrayList<String> reservedWordDirectory;
 
     static {
         reservedWordDirectory = new ArrayList<>();
@@ -39,7 +36,7 @@ public class Token {
     }
 
     //    sign: + - * / = <> <= >= > < ( ):= , . ; : .. ‘ ’ ^ @$
-    public static ArrayList<String> signDirectory;
+    private static ArrayList<String> signDirectory;
 
     static {
         signDirectory = new ArrayList<>();
@@ -67,6 +64,16 @@ public class Token {
     }
 
     @Override
+    public String toString() {
+
+        return "Token{" +
+                "token='" + token + '\'' +
+                ", tokenValue='" + tokenValue + '\'' +
+                ", tokenType='" + tokenType + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -88,31 +95,34 @@ public class Token {
     }
 
     public Token(String str) {
+        // 初始化这个域，后面利用系列布尔函数判断其属性
         this.token = str;
-        if (isLegalToken()) {
-            if (isReserved(str)) {
-                this.tokenValue = str;
-                this.tokenType = "reserved";
-            } else if (isIdentifier()) {
-                this.tokenValue = token;
-                this.tokenType = "identifier";
-            } else if (isConstant()) {
-                this.tokenValue = token;
-                this.tokenType = "constant";
-            }
+//        if (isLegalToken()) {
+        if (isReserved()) {
+            this.tokenValue = str;
+            this.tokenType = "reserved";
+        } else if (isIdentifier()) {
+            this.tokenValue = token;
+            this.tokenType = "identifier";
+        } else if (isSign()) {
+            this.tokenValue = token;
+            this.tokenType = "sign";
+        } else if (isConstant()) {
+            this.tokenValue = token;
+            this.tokenType = "constant";
         }
+//        }
     }
 
-    public static boolean contains(String str) {
+//    public static boolean contains(String str) {
 //        boolean isAReservedWord = reservedWordDirectory.contains(str);
 //        boolean isASign = signDirectory.contains(str);
 //        if (isAReservedWord || isASign) {
 //            return true;
 //        }
 //        return false;
-        return isReserved(str) || isSign(str);
-
-    }
+//        return isReserved(str) || isSign(str);
+//    }
 
     public String getTokenType() {
         return tokenType;
@@ -122,39 +132,40 @@ public class Token {
         return tokenValue;
     }
 
-    public boolean isLegalToken() {
 
-//        check if it is a identifier or constant
+    private boolean isSign() {
+        isLegalSign = signDirectory.contains(token);
+        return isLegalSign;
+    }
+
+    public boolean isLegalToken() {
+//        check if it is a  sign or identifier or constant
 //        String constantPatter = "[1-9]*\\.[0-9]*$";
 //        [+-]?[\d]+[\.]?[\d]*$
-        if (isIdentifier() || isConstant()) {
+        if (isLegalSign || isLegalReservedWord || isLegalIdentifier || isLegalConstant) {
             return true;
         }
-//        if (isLegalIdentifier || isLegalConstant) {
-//            return true;
-//        }
         return false;
     }
 
+
     private boolean isConstant() {
         String constantPatter = "^[\\d]+[\\.]?[\\d]*$";
-        boolean isLegalConstant = Pattern.matches(constantPatter, token);
+        isLegalConstant = Pattern.matches(constantPatter, token);
         return isLegalConstant;
     }
 
 
     private boolean isIdentifier() {
         String identifierPatter = "^[a-zA-Z][0-9a-zA-Z]*$";
-        boolean isLegalIdentifier = Pattern.matches(identifierPatter, token);
+        isLegalIdentifier = Pattern.matches(identifierPatter, token);
         return isLegalIdentifier;
     }
 
-    private static boolean isReserved(String str) {
-        return reservedWordDirectory.contains(str);
-    }
 
-    private static boolean isSign(String str) {
-        return signDirectory.contains(str);
+    private boolean isReserved() {
+        isLegalReservedWord = reservedWordDirectory.contains(token);
+        return isLegalReservedWord;
     }
 
 
