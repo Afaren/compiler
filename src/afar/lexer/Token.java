@@ -67,21 +67,39 @@ public class Token implements Serializable{
     public Token(String str) {
         // 初始化这个域，后面利用系列布尔函数判断其属性
         this.token = str;
-//        if (isLegalToken()) {
+        saveDependOnType(str);
+    }
+
+    private void saveDependOnType(String str) {
         if (isReserved()) {
-            this.tokenValue = str;
-            this.tokenType = "reserved";
+            setAsReserved(str);
         } else if (isIdentifier()) {
-            this.tokenValue = token;
-            this.tokenType = "identifier";
+            setAsIndentifier();
         } else if (isSign()) {
-            this.tokenValue = token;
-            this.tokenType = "sign";
+            setAsSign();
         } else if (isConstant()) {
-            this.tokenValue = token;
-            this.tokenType = "constant";
+            setAsConstant();
         }
-//        }
+    }
+
+    private void setAsConstant() {
+        this.tokenValue = token;
+        this.tokenType = "constant";
+    }
+
+    private void setAsSign() {
+        this.tokenValue = token;
+        this.tokenType = "sign";
+    }
+
+    private void setAsIndentifier() {
+        this.tokenValue = token;
+        this.tokenType = "identifier";
+    }
+
+    private void setAsReserved(String str) {
+        this.tokenValue = str;
+        this.tokenType = "reserved";
     }
 
     public String getTokenType() {
@@ -160,4 +178,18 @@ public class Token implements Serializable{
     }
 
 
+    public void setToken(String token) {
+        this.token = token;
+//
+//        isReserved();
+//        isConstant();
+//        isSign();
+//        isIdentifier();
+        saveDependOnType(token);
+//        Token(token);
+    }
+
+    public String getToken() {
+        return token;
+    }
 }
