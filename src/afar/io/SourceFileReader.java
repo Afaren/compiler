@@ -1,4 +1,4 @@
-package afar.lexer;
+package afar.io;
 
 import java.io.*;
 
@@ -24,7 +24,8 @@ public class SourceFileReader {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line);
+                // 加一个空格，两行就不会直接拼在一起
+                sb.append(line + " ");
             }
             sourceString = sb.toString();
         } catch (FileNotFoundException e) {

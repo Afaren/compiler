@@ -1,12 +1,13 @@
 package afar.lexer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
  * Created by Afar on 2016/4/10.
  */
-public class Token {
+public class Token implements Serializable{
     private String token;
     private String tokenType;
     private String tokenValue;
@@ -35,7 +36,7 @@ public class Token {
         reservedWordDirectory.add("proceduce");
     }
 
-    //    sign: + - * / = <> <= >= > < ( ):= , . ; : .. ‘ ’ ^ @$
+    //    sign: + - * / = <> <= >= > < ( ) := , . ; : .. ‘ ’ ^ @$
     private static ArrayList<String> signDirectory;
 
     static {
@@ -61,6 +62,34 @@ public class Token {
         signDirectory.add("^");
         signDirectory.add("@");
         signDirectory.add("$");
+    }
+
+    public Token(String str) {
+        // 初始化这个域，后面利用系列布尔函数判断其属性
+        this.token = str;
+//        if (isLegalToken()) {
+        if (isReserved()) {
+            this.tokenValue = str;
+            this.tokenType = "reserved";
+        } else if (isIdentifier()) {
+            this.tokenValue = token;
+            this.tokenType = "identifier";
+        } else if (isSign()) {
+            this.tokenValue = token;
+            this.tokenType = "sign";
+        } else if (isConstant()) {
+            this.tokenValue = token;
+            this.tokenType = "constant";
+        }
+//        }
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public String getValue() {
+        return tokenValue;
     }
 
     @Override
@@ -92,44 +121,6 @@ public class Token {
         result = 31 * result + tokenValue.hashCode();
         result = 31 * result + tokenType.hashCode();
         return result;
-    }
-
-    public Token(String str) {
-        // 初始化这个域，后面利用系列布尔函数判断其属性
-        this.token = str;
-//        if (isLegalToken()) {
-        if (isReserved()) {
-            this.tokenValue = str;
-            this.tokenType = "reserved";
-        } else if (isIdentifier()) {
-            this.tokenValue = token;
-            this.tokenType = "identifier";
-        } else if (isSign()) {
-            this.tokenValue = token;
-            this.tokenType = "sign";
-        } else if (isConstant()) {
-            this.tokenValue = token;
-            this.tokenType = "constant";
-        }
-//        }
-    }
-
-//    public static boolean contains(String str) {
-//        boolean isAReservedWord = reservedWordDirectory.contains(str);
-//        boolean isASign = signDirectory.contains(str);
-//        if (isAReservedWord || isASign) {
-//            return true;
-//        }
-//        return false;
-//        return isReserved(str) || isSign(str);
-//    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public String getValue() {
-        return tokenValue;
     }
 
 

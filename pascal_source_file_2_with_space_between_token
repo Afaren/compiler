@@ -1,0 +1,6 @@
+program afar ;
+var a , sum : integer ;
+begin
+   a = 1 ;
+   sum := a ;
+end .

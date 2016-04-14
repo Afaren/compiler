@@ -1,7 +1,4 @@
-import afar.lexer.LexerTest;
-import afar.lexer.SourceFileReader;
-import afar.lexer.SourceFileReaderTest;
-import afar.lexer.TokenTest;
+import afar.lexer.*;
 import junit.framework.TestSuite;
 
 /**
@@ -13,6 +10,7 @@ public class AllTests {
         suite.addTestSuite(LexerTest.class);
         suite.addTestSuite(TokenTest.class);
         suite.addTestSuite(SourceFileReaderTest.class);
+        suite.addTestSuite(TokenSaveAndFetchTest.class);
         return suite;
     }
 }

@@ -37,16 +37,6 @@ public class TokenTest extends TestCase {
 
     }
 
-//    public void testTokenContainsSign() throws Exception {
-//        final String STAR = "*";
-//        assertTrue("Token should contains * as a sign", Token.contains(STAR));
-//    }
-
-//    public void testTokenContainsReservedWordProgram() throws Exception {
-//        final String PROGRAM = "program";
-//        assertTrue("Token should contains program as a reserved word", Token.contains(PROGRAM));
-//    }
-
     public void testLegalConstant() throws Exception {
         final String INT_CONSTANT = "100";
         final String DOUBLE_CONSTANT = "100.10";
