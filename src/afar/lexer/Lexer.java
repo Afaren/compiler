@@ -1,7 +1,5 @@
 package afar.lexer;
 
-import org.junit.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
 

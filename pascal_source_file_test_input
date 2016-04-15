@@ -1,0 +1,12 @@
+program p09;
+var a,b,c:integer;
+begin
+  readln(a,b,c);
+  if (a>0)and(b>0)and(c>0)and(a+b>c)and(a+c>b)and(b+c>a)
+       then
+         if (a*a+b*b=c*c)or(a*a+c*c=b*b)or(b*b+c*c=a*a)
+             then writeln('is RT triangle')
+             else writeln('is not RT triangle')
+       else writeln('is no triangle');
+  readln
+end.

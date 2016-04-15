@@ -151,4 +151,44 @@ public class LexerTest extends TestCase {
     }
 
 
+
+    public void testWithoutSpaceBetweenToken_2() throws Exception {
+
+        final String string_without_space = "(a>0)and**';.<=<>";
+        tokenDirectory_actual = pascal_lexer.tokenize(string_without_space);
+        tokenDirectory_expected.add(new Token("("));
+        tokenDirectory_expected.add(new Token("a"));
+        tokenDirectory_expected.add(new Token(">"));
+        tokenDirectory_expected.add(new Token("0"));
+        tokenDirectory_expected.add(new Token(")"));
+        tokenDirectory_expected.add(new Token("and"));
+        tokenDirectory_expected.add(new Token("*"));
+        tokenDirectory_expected.add(new Token("*"));
+        tokenDirectory_expected.add(new Token("'"));
+        tokenDirectory_expected.add(new Token(";"));
+        tokenDirectory_expected.add(new Token("."));
+        tokenDirectory_expected.add(new Token("<="));
+        tokenDirectory_expected.add(new Token("<>"));
+//        tokenDirectory_expected.add(new Token("."));
+//        tokenDirectory_expected.add(new Token("."));
+
+        final int expected_size = 13;
+        assertEquals( expected_size, tokenDirectory_actual.size());
+        assertTrue("tokenDirectory should contains (", tokenDirectory_actual.contains(new Token("(")));
+        assertTrue("tokenDirectory should contains a", tokenDirectory_actual.contains(new Token("a")));
+        assertTrue("tokenDirectory should contains >", tokenDirectory_actual.contains(new Token(">")));
+        assertTrue("tokenDirectory should contains 0", tokenDirectory_actual.contains(new Token("0")));
+        assertTrue("tokenDirectory should contains )", tokenDirectory_actual.contains(new Token(")")));
+        assertTrue("tokenDirectory should contains and", tokenDirectory_actual.contains(new Token("and")));
+
+        assertTrue("tokenDirectory should contains *", tokenDirectory_actual.contains(new Token("*")));
+        assertTrue("tokenDirectory should contains *", tokenDirectory_actual.contains(new Token("*")));
+        assertTrue("tokenDirectory should contains '", tokenDirectory_actual.contains(new Token("'")));
+        assertTrue("tokenDirectory should contains ;", tokenDirectory_actual.contains(new Token(";")));
+        assertTrue("tokenDirectory should contains <=", tokenDirectory_actual.contains(new Token("<=")));
+        assertTrue("tokenDirectory should contains <>", tokenDirectory_actual.contains(new Token("<>")));
+//        assertTrue("tokenDirectory should contains .", tokenDirectory_actual.contains(new Token(".")));
+
+        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
+    }
 }
