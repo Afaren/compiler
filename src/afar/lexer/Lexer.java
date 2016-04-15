@@ -46,13 +46,14 @@ public class Lexer {
     }
 
     private void step_2(String word_need_to_process_more_step) {
-        // 用一个stringbuilder来存取每一次得到的字符串
+        // 用一个stringBuilder来存取每一次得到的字符串
 //        用一个String来保存当前的经过判断的合法的token的string
         if (word_need_to_process_more_step.length() < 1)
             return;
 
-        int begin = step_2(word_need_to_process_more_step, 0, word_need_to_process_more_step.length()) - 1;
-        saveToken(new Token(word_need_to_process_more_step.substring(begin, word_need_to_process_more_step.length())));
+//     int begin = step_2(word_need_to_process_more_step, 0, word_need_to_process_more_step.length()) - 1;
+        int begin = step_2(word_need_to_process_more_step, 0, word_need_to_process_more_step.length());
+//        saveToken(new Token(word_need_to_process_more_step.substring(begin, word_need_to_process_more_step.length())));
     }
 
     private int step_2(String word_need_to_process_more_step, int fromIndex, int lastIndex) {
@@ -65,7 +66,9 @@ public class Lexer {
 
 //        current.setToken(word.charAt(0) + "");
         int i;
+        int lastBeginIndex = 0;
         for (i = fromIndex; i < lastIndex; i++) {
+            lastBeginIndex = i;
             sb.append(word.charAt(i));
             next.setToken(sb.toString());
             if (next.isLegalToken()) {
@@ -73,11 +76,18 @@ public class Lexer {
 
             } else {
                 saveToken(current);
-                step_2(word, i, lastIndex);
+                current = new Token("");//用来保存新的current，因为如果还用这个的话，会将已保存的current替换掉
+//                lastBeginIndex = step_2(word.substring(i, lastIndex), 0, word.substring(i, lastIndex).length());
+                // 这里重置sb跟next
+                sb.replace(0, sb.length(), word.charAt(i)+"");
+                next.reset();
+                next.setToken(sb.toString());
+                current.setToken(next.getToken());
+//                break;
             }
         }
-//        saveToken(next);
-        return i;
+        saveToken(next);
+        return lastBeginIndex;
         //返回最后一个元素的开始下标，处理最后一个元素
 
     }

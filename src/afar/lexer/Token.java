@@ -192,4 +192,10 @@ public class Token implements Serializable{
     public String getToken() {
         return token;
     }
+
+    public void reset() {
+        token= null;
+        tokenType=null;
+        tokenValue=null;
+    }
 }

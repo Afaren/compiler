@@ -52,6 +52,36 @@ public class LexerTest extends TestCase {
     }
 
 
+    public void testParseSourceFileWithoutSpaceBetweenTokenInputString() throws Exception {
+        final String fileName = "pascal_source_file_3_without_space_between_token";
+        tokenDirectory_expected.add(new Token("program"));
+        tokenDirectory_expected.add(new Token("afar"));
+        tokenDirectory_expected.add(new Token(";"));
+        tokenDirectory_expected.add(new Token("var"));
+        tokenDirectory_expected.add(new Token("a"));
+        tokenDirectory_expected.add(new Token(","));
+        tokenDirectory_expected.add(new Token("sum"));
+        tokenDirectory_expected.add(new Token(":"));
+        tokenDirectory_expected.add(new Token("integer"));
+        tokenDirectory_expected.add(new Token(";"));
+        tokenDirectory_expected.add(new Token("begin"));
+        tokenDirectory_expected.add(new Token("a"));
+        tokenDirectory_expected.add(new Token("="));
+        tokenDirectory_expected.add(new Token("1"));
+        tokenDirectory_expected.add(new Token(";"));
+        tokenDirectory_expected.add(new Token("sum"));
+        tokenDirectory_expected.add(new Token(":="));
+        tokenDirectory_expected.add(new Token("a"));
+        tokenDirectory_expected.add(new Token(";"));
+        tokenDirectory_expected.add(new Token("end"));
+        tokenDirectory_expected.add(new Token("."));
+        SourceFileReader sourceFileReader = new SourceFileReader(fileName);
+        String sourceString = sourceFileReader.getSourceString();
+        tokenDirectory_actual = new Lexer().tokenize(sourceString);
+        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
+
+    }
+
     public void testParseSourceFileWithSpaceBetweenTokenInputString() throws Exception {
 
         final String fileName = "pascal_source_file_2_with_space_between_token";
