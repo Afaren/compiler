@@ -74,7 +74,7 @@ public class Token implements Serializable{
         if (isReserved()) {
             setAsReserved(str);
         } else if (isIdentifier()) {
-            setAsIndentifier();
+            setAsIdentifier();
         } else if (isSign()) {
             setAsSign();
         } else if (isConstant()) {
@@ -92,7 +92,7 @@ public class Token implements Serializable{
         this.tokenType = "sign";
     }
 
-    private void setAsIndentifier() {
+    private void setAsIdentifier() {
         this.tokenValue = token;
         this.tokenType = "identifier";
     }
