@@ -125,7 +125,7 @@ public class LexerTest extends TestCase {
         tokenDirectory_expected.add(new Token("begin"));
         tokenDirectory_expected.add(new Token("end"));
         tokenDirectory_expected.add(new Token("."));
-        tokenDirectory_actual.forEach(System.out::println);
+//        tokenDirectory_actual.forEach(System.out::println);
         assertTrue("tokenDirectory should contains program", tokenDirectory_actual.contains(new Token("program")));
         assertTrue("tokenDirectory should contains afar", tokenDirectory_actual.contains(new Token("afar")));
         assertTrue("tokenDirectory should contains ;", tokenDirectory_actual.contains(new Token(";")));

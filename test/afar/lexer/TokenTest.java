@@ -9,8 +9,8 @@ public class TokenTest extends TestCase {
 
     public void testKeywordProgramType() throws Exception {
         Token program = new Token("program");
-        String program_type = "reserved";
-        assertEquals(program_type, program.getTokenType());
+        Token.TokenType program_type = Token.TokenType.reserved;
+        assertEquals(program_type, program.getType());
     }
 
     public void testKeywordProgramValue() throws Exception {
@@ -22,17 +22,17 @@ public class TokenTest extends TestCase {
     public void testIdentifierAfarTypeAndValue() throws Exception {
         Token afar = new Token("afar");
         final String afar_value = "afar";
-        final String afar_identifier = "identifier";
+        final Token.TokenType afar_identifier = Token.TokenType.identifier;
         assertEquals(afar_value, afar.getValue());
-        assertEquals(afar_identifier, afar.getTokenType());
+        assertEquals(afar_identifier, afar.getType());
     }
 
     public void testConstants() throws Exception {
         final String DOUBLE_CONSTANT = "100.10";
         Token constant = new Token(DOUBLE_CONSTANT);
-        final String constant_type = "constant";
+        final Token.TokenType constant_type = Token.TokenType.constant;
         final String constant_value = DOUBLE_CONSTANT;
-        assertEquals(constant_type, constant.getTokenType());
+        assertEquals(constant_type, constant.getType());
         assertEquals(constant_value, constant.getValue());
 
     }

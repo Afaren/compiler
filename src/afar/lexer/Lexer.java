@@ -9,13 +9,15 @@ import java.util.List;
 public class Lexer {
     List<Token> tokenDirectory = new ArrayList<>();
 
+    public List<Token> getTokenDirectory() {
+        return tokenDirectory;
+    }
 
-
-/*
-**    将source以空格分割开，识别是否每一个token都合法，不合法再做处理
-**    如果得到的token不合法，则是因为其内部不符合词法，这时可以将这个token再做进一步的处理
-**    用空格分割的token不合法，则进一步使用贪心算法重新分析这个token
- */
+    /*
+    **    将source以空格分割开，识别是否每一个token都合法，不合法再做处理
+    **    如果得到的token不合法，则是因为其内部不符合词法，这时可以将这个token再做进一步的处理
+    **    用空格分割的token不合法，则进一步使用贪心算法重新分析这个token
+     */
     public List<Token> tokenize(String source) {
         String[] words = source.split(" ");
         for (String word : words) {

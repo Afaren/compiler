@@ -1,4 +1,5 @@
 import afar.lexer.*;
+import afar.parser.ParserTest;
 import junit.framework.TestSuite;
 
 /**
@@ -11,6 +12,7 @@ public class AllTests {
         suite.addTestSuite(TokenTest.class);
         suite.addTestSuite(SourceFileReaderTest.class);
         suite.addTestSuite(TokenSaveAndFetchTest.class);
+        suite.addTestSuite(ParserTest.class);
         return suite;
     }
 }

@@ -7,11 +7,22 @@ import java.util.regex.Pattern;
 /**
  * Created by Afar on 2016/4/10.
  */
-public class Token implements Serializable{
+public class Token implements Serializable {
     private String token;
-    private String tokenType;
+    //    private String tokenType;
     private String tokenValue;
 
+    private TokenType tokenType;
+
+
+
+    public enum TokenType {
+        sign, constant, identifier, reserved
+    }
+
+    /*
+        我想将类型修改为枚举，这样Parse的写法应该会简单很多才对
+     */
     private boolean isLegalSign;
     private boolean isLegalConstant;
     private boolean isLegalIdentifier;
@@ -33,7 +44,7 @@ public class Token implements Serializable{
         reservedWordDirectory.add("then");
         reservedWordDirectory.add("else");
         reservedWordDirectory.add("do");
-        reservedWordDirectory.add("proceduce");
+        reservedWordDirectory.add("procedure");
     }
 
     //    sign: + - * / = <> <= >= > < ( ) := , . ; : .. ‘ ’ ^ @$
@@ -84,25 +95,29 @@ public class Token implements Serializable{
 
     private void setAsConstant() {
         this.tokenValue = token;
-        this.tokenType = "constant";
+//        this.tokenType = "constant";
+        this.tokenType = TokenType.constant;
     }
+
 
     private void setAsSign() {
         this.tokenValue = token;
-        this.tokenType = "sign";
+//        this.tokenType = "sign";
+        this.tokenType = TokenType.sign;
     }
 
     private void setAsIdentifier() {
         this.tokenValue = token;
-        this.tokenType = "identifier";
+//        this.tokenType = "identifier";
+        this.tokenType = TokenType.identifier;
     }
 
     private void setAsReserved(String str) {
         this.tokenValue = str;
-        this.tokenType = "reserved";
+        this.tokenType = TokenType.reserved;
     }
 
-    public String getTokenType() {
+    public TokenType getType() {
         return tokenType;
     }
 
@@ -142,11 +157,6 @@ public class Token implements Serializable{
     }
 
 
-    private boolean isSign() {
-        isLegalSign = signDirectory.contains(token);
-        return isLegalSign;
-    }
-
     public boolean isLegalToken() {
 //        check if it is a  sign or identifier or constant
 //        String constantPatter = "[1-9]*\\.[0-9]*$";
@@ -155,6 +165,11 @@ public class Token implements Serializable{
             return true;
         }
         return false;
+    }
+
+    private boolean isSign() {
+        isLegalSign = signDirectory.contains(token);
+        return isLegalSign;
     }
 
 
@@ -194,8 +209,8 @@ public class Token implements Serializable{
     }
 
     public void reset() {
-        token= null;
-        tokenType=null;
-        tokenValue=null;
+        token = null;
+        tokenType = null;
+        tokenValue = null;
     }
 }
