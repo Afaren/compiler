@@ -1,5 +1,7 @@
 package afar.lexer;
 
+import afar.tokenizer.Token;
+
 import java.util.ArrayList;
 import java.util.List;
 

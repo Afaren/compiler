@@ -9,6 +9,7 @@ public class AllTests {
     public static TestSuite suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(LexerTest.class);
+        suite.addTestSuite(ClientTest.class);
         suite.addTestSuite(TokenTest.class);
         suite.addTestSuite(SourceFileReaderTest.class);
         suite.addTestSuite(TokenSaveAndFetchTest.class);

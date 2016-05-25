@@ -1,6 +1,7 @@
 package afar.lexer;
 
 import afar.io.SourceFileReader;
+import afar.tokenizer.Token;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
@@ -32,7 +33,7 @@ public class LexerTest extends TestCase {
         pascal_lexer = null;
     }
 
-    public void testParseLocalStringWithSpaceBetweenToken() throws Exception {
+    public void test_parse_local_string_wWith_space_between_token() throws Exception {
         // 必须先重写hash跟equals方法才可以这样比较
         String pascal_source_with_space = "program afar ; begin end . ";
         tokenDirectory_actual = pascal_lexer.tokenize(pascal_source_with_space);
@@ -52,7 +53,7 @@ public class LexerTest extends TestCase {
     }
 
 
-    public void testParseSourceFileWithoutSpaceBetweenTokenInputString() throws Exception {
+    public void test_parse_source_file_without_space_between_token_input_string() throws Exception {
         final String fileName = "pascal_source_file_3_without_space_between_token";
         tokenDirectory_expected.add(new Token("program"));
         tokenDirectory_expected.add(new Token("afar"));
@@ -113,7 +114,7 @@ public class LexerTest extends TestCase {
     }
 
 
-    public void testParseLocalStringWithoutSpaceBetweenToken() throws Exception {
+    public void test_parse_local_string_without_space_between_token() throws Exception {
 
         // 两个token连在一起的问题可以解决了
         // 目前无法处理一下这种三个token连在一起的情况，递归程序有问题，不够完善
@@ -151,6 +152,23 @@ public class LexerTest extends TestCase {
     }
 
 
+    public void testErrorRaise() throws Exception {
+        fail("error raise");
+
+    }
+
+    public void testErrorString() throws Exception {
+        final String error_string = "100a + b;";
+
+        try {
+            tokenDirectory_actual = pascal_lexer.tokenize(error_string);
+            fail("error should have been raised, but not");
+        } catch (Error expected) {
+//            assertTrue("sanity check", true);
+            System.out.println(expected);
+        }
+
+    }
 
     public void testWithoutSpaceBetweenToken_2() throws Exception {
 

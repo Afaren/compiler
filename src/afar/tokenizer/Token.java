@@ -1,4 +1,4 @@
-package afar.lexer;
+package afar.tokenizer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -175,6 +175,7 @@ public class Token implements Serializable {
 
     private boolean isConstant() {
         String constantPatter = "^[\\d]+[\\.]?[\\d]*$";
+//        String constantPatter = "^[1-9]+[\\.]?[\\d]*$";
         isLegalConstant = Pattern.matches(constantPatter, token);
         return isLegalConstant;
     }

@@ -1,6 +1,6 @@
 package afar.io;
 
-import afar.lexer.Token;
+import afar.tokenizer.Token;
 
 import java.io.*;
 import java.util.List;

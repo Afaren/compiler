@@ -1,6 +1,7 @@
 package afar.lexer;
 
 import afar.io.TokenSaveAndFetch;
+import afar.tokenizer.Token;
 import junit.framework.TestCase;
 import org.junit.Assert;
 

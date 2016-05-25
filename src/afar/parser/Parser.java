@@ -1,7 +1,7 @@
 package afar.parser;
 
 import afar.lexer.Lexer;
-import afar.lexer.Token;
+import afar.tokenizer.Token;
 
 import java.util.List;
 
@@ -9,25 +9,38 @@ import java.util.List;
  * Created by Afar on 2016/5/22.
  */
 public class Parser {
-    private Lexer lexer;
     private List<Token> tokenDirectory;
     private int currentPosition;
     private Token currentToken;
+    private String source;
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public Parser(String source) {
-        lexer = new Lexer();
-        lexer.tokenize(source);
-        tokenDirectory = lexer.getTokenDirectory();
+        this.source = source;
+    }
+
+    public Parser() {
+        // empty
     }
 
 
     public boolean parseProgram() {
+        buildTokenDirectory();
         matchTokenValue("program", errorMessage("program"));
         matchProgramName();
         matchSeparator();
         parseProgramBody();
         matchTokenValue(".", errorMessage("."));
         return true;
+    }
+
+    private void buildTokenDirectory() {
+        Lexer lexer = new Lexer();
+        lexer.tokenize(source);
+        tokenDirectory = lexer.getTokenDirectory();
     }
 
     private void matchSeparator() {
