@@ -33,7 +33,7 @@ public class LexerTest extends TestCase {
         pascal_lexer = null;
     }
 
-    public void test_parse_local_string_wWith_space_between_token() throws Exception {
+    public void test_parse_local_string_with_space_between_token() throws Exception {
         // 必须先重写hash跟equals方法才可以这样比较
         String pascal_source_with_space = "program afar ; begin end . ";
         tokenDirectory_actual = pascal_lexer.tokenize(pascal_source_with_space);
@@ -51,7 +51,6 @@ public class LexerTest extends TestCase {
         assertTrue("tokenDirectory should contains .", tokenDirectory_actual.contains(new Token(".")));
         Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
     }
-
 
     public void test_parse_source_file_without_space_between_token_input_string() throws Exception {
         final String fileName = "pascal_source_file_3_without_space_between_token";
@@ -83,7 +82,7 @@ public class LexerTest extends TestCase {
 
     }
 
-    public void testParseSourceFileWithSpaceBetweenTokenInputString() throws Exception {
+    public void test_parse_source_file_with_space_between_token_input_string() throws Exception {
 
         final String fileName = "pascal_source_file_2_with_space_between_token";
         tokenDirectory_expected.add(new Token("program"));
@@ -113,7 +112,6 @@ public class LexerTest extends TestCase {
         Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
     }
 
-
     public void test_parse_local_string_without_space_between_token() throws Exception {
 
         // 两个token连在一起的问题可以解决了
@@ -136,9 +134,7 @@ public class LexerTest extends TestCase {
         Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
     }
 
-
-    // 这里成功了，证明这个贪心算法是有效的
-    public void testWithoutSpaceBetweenToken() throws Exception {
+    public void test_without_space_between_token() throws Exception {
 
         final String string_without_space = "afar;";
         tokenDirectory_actual = pascal_lexer.tokenize(string_without_space);
@@ -151,23 +147,26 @@ public class LexerTest extends TestCase {
         Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
     }
 
-
-    public void testErrorRaise() throws Exception {
-        fail("error raise");
-
-    }
-
-    public void testErrorString() throws Exception {
+    public void test_error_string() throws Exception {
         final String error_string = "100a + b;";
-
+        String failMessage = "error should have been raised, but not";
+        final String expected_massage = "java.lang.Error: 100a is a bad token";
         try {
             tokenDirectory_actual = pascal_lexer.tokenize(error_string);
-            fail("error should have been raised, but not");
-        } catch (Error expected) {
-//            assertTrue("sanity check", true);
-            System.out.println(expected);
+            fail(failMessage);
+        } catch (Error actual) {
+            assertEquals("error message should equals", expected_massage, actual.toString());
         }
+    }
 
+    public void test_arithmetic_expression() throws Exception {
+        final String expression = "100-a;";
+        tokenDirectory_actual = pascal_lexer.tokenize(expression);
+        tokenDirectory_expected.add(new Token("100"));
+        tokenDirectory_expected.add(new Token("-"));
+        tokenDirectory_expected.add(new Token("a"));
+        tokenDirectory_expected.add(new Token(";"));
+        Assert.assertArrayEquals("'100-a;' should have 4 token", tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
     }
 
     public void testWithoutSpaceBetweenToken_2() throws Exception {
@@ -191,7 +190,7 @@ public class LexerTest extends TestCase {
 //        tokenDirectory_expected.add(new Token("."));
 
         final int expected_size = 13;
-        assertEquals( expected_size, tokenDirectory_actual.size());
+        assertEquals(expected_size, tokenDirectory_actual.size());
         assertTrue("tokenDirectory should contains (", tokenDirectory_actual.contains(new Token("(")));
         assertTrue("tokenDirectory should contains a", tokenDirectory_actual.contains(new Token("a")));
         assertTrue("tokenDirectory should contains >", tokenDirectory_actual.contains(new Token(">")));

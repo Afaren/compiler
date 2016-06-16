@@ -28,7 +28,6 @@ public class ParserTest extends TestCase {
         assertEquals("should accept this source program", true, accepted);
     }
 
-
     public void test_source_program_with_single_variable_specification() throws Exception {
         final String source_program = "program afar; var a : integer; begin end . ";
         boolean accepted = isAccepted(source_program);

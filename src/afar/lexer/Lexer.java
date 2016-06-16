@@ -50,7 +50,14 @@ public class Lexer {
         Token current = new Token("");
         Token previous = new Token("");
         StringBuilder savedString = new StringBuilder();
+             /*
+                增加找到100a此类的词法错误
+             */
+        if (Character.isDigit(word.charAt(0)))
+            isBadNumber(word);
+
         for (int i = 0; i < length; i++) {
+
             savedString.append(word.charAt(i));
             current.setToken(savedString.toString());
             if (current.isLegalToken()) {
@@ -64,6 +71,25 @@ public class Lexer {
         }
         saveToken(current);
     }
+
+    private void isBadNumber(String word) {
+
+        StringBuilder savedString = new StringBuilder();
+        savedString.append(word.charAt(0));
+        int i = 1;
+
+        while (Character.isDigit(word.charAt(i))) {
+            savedString.append(word.charAt(i));
+            i++;
+        }
+        // 数字之后紧跟着字母，抛出异常
+        if (Character.isLetter(word.charAt(i))) {
+            savedString.append(word.charAt(i));
+            throw new Error(savedString + " is a bad token");
+        }
+
+
+}
 
     private int backwardAChar(int currentPosition) {
         return --currentPosition;//指针回退

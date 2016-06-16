@@ -8,19 +8,19 @@ import junit.framework.TestCase;
  */
 public class TokenTest extends TestCase {
 
-    public void testKeywordProgramType() throws Exception {
+    public void test_keyword_program_type() throws Exception {
         Token program = new Token("program");
         Token.TokenType program_type = Token.TokenType.reserved;
         assertEquals(program_type, program.getType());
     }
 
-    public void testKeywordProgramValue() throws Exception {
+    public void test_keyword_program_value() throws Exception {
         Token program = new Token("program");
         String program_value = "program";
         assertEquals(program_value, program.getValue());
     }
 
-    public void testIdentifierAfarTypeAndValue() throws Exception {
+    public void test_identifier_afar_type_and_value() throws Exception {
         Token afar = new Token("afar");
         final String afar_value = "afar";
         final Token.TokenType afar_identifier = Token.TokenType.identifier;
@@ -28,7 +28,7 @@ public class TokenTest extends TestCase {
         assertEquals(afar_identifier, afar.getType());
     }
 
-    public void testConstants() throws Exception {
+    public void test_constants() throws Exception {
         final String DOUBLE_CONSTANT = "100.10";
         Token constant = new Token(DOUBLE_CONSTANT);
         final Token.TokenType constant_type = Token.TokenType.constant;
@@ -38,7 +38,7 @@ public class TokenTest extends TestCase {
 
     }
 
-    public void testLegalConstant() throws Exception {
+    public void test_legal_constant() throws Exception {
         final String INT_CONSTANT = "100";
         final String DOUBLE_CONSTANT = "100.10";
         Token double_constant_token = new Token(DOUBLE_CONSTANT);
@@ -47,7 +47,7 @@ public class TokenTest extends TestCase {
         assertTrue("int constant is legal token", int_constant_token.isLegalToken());
     }
 
-    public void testIllegalConstant() throws Exception {
+    public void test_illegal_constant() throws Exception {
         final String BAD_INT_CONSTANT = "100.x";
         final String BAD_DOUBLE_CONSTANT = "100.10x";
         Token double_constant_token = new Token(BAD_DOUBLE_CONSTANT);
@@ -57,7 +57,7 @@ public class TokenTest extends TestCase {
 
     }
 
-    public void testSignAsLegalToken() throws Exception {
+    public void test_sign_as_legal_token() throws Exception {
         final String sign_1 = ";";
         final String sign_2 = "*";
         final String sign_3 = ".";
@@ -75,7 +75,7 @@ public class TokenTest extends TestCase {
 
     }
 
-    public void testIllegalWord() throws Exception {
+    public void test_illegal_word() throws Exception {
         final String ILLEGAL_WORD_1 = "2323xxx";
         final String ILLEGAL_WORD_2 = "1x2x";
         final String ILLEGAL_WORD_3 = "x**";

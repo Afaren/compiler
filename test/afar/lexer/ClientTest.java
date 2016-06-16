@@ -28,9 +28,6 @@ public class ClientTest extends TestCase {
         SourceFileReader sourceFileReader = new SourceFileReader(fileName);
         String sourceString = sourceFileReader.getSourceString();
         tokenDirectory_actual = new Lexer().tokenize(sourceString);
-//        for (Token token :
-//                tokenDirectory_actual) {
-//            System.out.println(token);
-//        }
+        tokenDirectory_actual.forEach(System.out::println);
     }
 }
