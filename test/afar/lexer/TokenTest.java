@@ -8,56 +8,67 @@ import junit.framework.TestCase;
  */
 public class TokenTest extends TestCase {
 
-    public void test_keyword_program_type() throws Exception {
+    public void test_type_of_keyword_program() throws Exception {
         Token program = new Token("program");
-        Token.TokenType program_type = Token.TokenType.reserved;
-        assertEquals(program_type, program.getType());
+        assertEquals(Token.TokenType.reserved, program.getType());
     }
 
-    public void test_keyword_program_value() throws Exception {
-        Token program = new Token("program");
-        String program_value = "program";
-        assertEquals(program_value, program.getValue());
+    public void test_value_of_keyword_program() throws Exception {
+        String keyword = "program";
+        Token program = new Token(keyword);
+        String expectedValue = keyword;
+        assertEquals(expectedValue, program.getValue());
     }
 
-    public void test_identifier_afar_type_and_value() throws Exception {
-        Token afar = new Token("afar");
-        final String afar_value = "afar";
-        final Token.TokenType afar_identifier = Token.TokenType.identifier;
-        assertEquals(afar_value, afar.getValue());
-        assertEquals(afar_identifier, afar.getType());
+    public void test_type_and_value_of_identifier() throws Exception {
+        String identifier = "afar";
+        Token afar = new Token(identifier);
+        String expectedValue = identifier;
+        assertEquals(expectedValue, afar.getValue());
+        assertEquals(Token.TokenType.identifier, afar.getType());
     }
 
     public void test_constants() throws Exception {
         final String DOUBLE_CONSTANT = "100.10";
         Token constant = new Token(DOUBLE_CONSTANT);
-        final Token.TokenType constant_type = Token.TokenType.constant;
-        final String constant_value = DOUBLE_CONSTANT;
-        assertEquals(constant_type, constant.getType());
-        assertEquals(constant_value, constant.getValue());
+        final String expectedValue = DOUBLE_CONSTANT;
+        assertEquals(Token.TokenType.constant, constant.getType());
+        assertEquals(expectedValue, constant.getValue());
 
     }
 
     public void test_legal_constant() throws Exception {
         final String INT_CONSTANT = "100";
         final String DOUBLE_CONSTANT = "100.10";
-        Token double_constant_token = new Token(DOUBLE_CONSTANT);
-        assertTrue("double constant is legal token", double_constant_token.isLegalToken());
-        Token int_constant_token = new Token(INT_CONSTANT);
-        assertTrue("int constant is legal token", int_constant_token.isLegalToken());
+        Token double_constant = new Token(DOUBLE_CONSTANT);
+        assertTrue("double constant is legal token", double_constant.isLegalToken());
+        Token int_constant = new Token(INT_CONSTANT);
+        assertTrue("int constant is legal token", int_constant.isLegalToken());
     }
 
     public void test_illegal_constant() throws Exception {
-        final String BAD_INT_CONSTANT = "100.x";
-        final String BAD_DOUBLE_CONSTANT = "100.10x";
-        Token double_constant_token = new Token(BAD_DOUBLE_CONSTANT);
-        assertFalse("bad double token", double_constant_token.isLegalToken());
-        Token int_constant_token = new Token(BAD_INT_CONSTANT);
-        assertFalse("bad int token", int_constant_token.isLegalToken());
+
+        //todo 用数组的形式减少冗余代码
+
+        String bad_int_constant = "100x";
+        badConstantToken(bad_int_constant);
+
+
+        String bad_double_constant = "100.10x";
+        badConstantToken(bad_double_constant);
+
+        bad_double_constant = "x100.10";
+        badConstantToken(bad_double_constant);
+
+
+        bad_double_constant = "1x0.10";
+        badConstantToken(bad_double_constant);
+
 
     }
 
     public void test_sign_as_legal_token() throws Exception {
+        // todo 这里也可以用数组的方式来减少冗余
         final String sign_1 = ";";
         final String sign_2 = "*";
         final String sign_3 = ".";
@@ -71,34 +82,13 @@ public class TokenTest extends TestCase {
         boolean legal_3 = sign_token_3.isLegalToken();
         boolean legal_4 = sign_token_4.isLegalToken();
 
-        assertTrue("; * . = these signs are legal token", legal_1 && legal_2 && legal_3 && legal_4);
+        assertTrue("'; * . =', these signs are legal token", legal_1 && legal_2 && legal_3 && legal_4);
 
     }
 
-    public void test_illegal_word() throws Exception {
-        final String ILLEGAL_WORD_1 = "2323xxx";
-        final String ILLEGAL_WORD_2 = "1x2x";
-        final String ILLEGAL_WORD_3 = "x**";
-        final String LEGAL_WORD_1 = "xxx";
-        final String LEGAL_WORD_2 = "x3434";
-        final String LEGAL_WORD_3 = "x33xx";
 
-        Token illegalToken_1 = new Token(ILLEGAL_WORD_1);
-        assertFalse(ILLEGAL_WORD_1 + " is an illegal token", illegalToken_1.isLegalToken());
-
-        Token illegalToken_2 = new Token(ILLEGAL_WORD_2);
-        assertFalse(ILLEGAL_WORD_2 + " is an illegal token", illegalToken_2.isLegalToken());
-
-        Token illegalToken_contain_star = new Token(ILLEGAL_WORD_3);
-        assertFalse("token can not contains star", illegalToken_contain_star.isLegalToken());
-
-        Token legalToken_1 = new Token(LEGAL_WORD_1);
-        assertTrue(LEGAL_WORD_1 + " is a legal token", legalToken_1.isLegalToken());
-
-        Token legalToken_2 = new Token(LEGAL_WORD_2);
-        assertTrue(LEGAL_WORD_2 + " is a legal token", legalToken_2.isLegalToken());
-
-        Token legalToken_3 = new Token(LEGAL_WORD_1);
-        assertTrue(LEGAL_WORD_3 + " is a legal token", legalToken_3.isLegalToken());
+    private void badConstantToken(String constant) {
+        Token int_constant = new Token(constant);
+        assertFalse("bad constant token", int_constant.isLegalToken());
     }
 }
