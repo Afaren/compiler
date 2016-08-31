@@ -62,7 +62,8 @@ public class Token implements Serializable {
 
     public Token(String str) {
         this.token = str;
-        setType(str);
+        this.value = str;
+        setType();
     }
 
     public TokenType getType() {
@@ -75,7 +76,9 @@ public class Token implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
-        setType(token);
+        this.value = token;
+
+        setType();
     }
 
     public String getToken() {
@@ -132,45 +135,26 @@ public class Token implements Serializable {
     }
 
     private boolean isConstant() {
-        String constantRegx = "^[\\d]+[\\.]?[\\d]*$";
-        return Pattern.matches(constantRegx, token);
+        String constantRegex = "^[\\d]+[\\.]?[\\d]*$";
+        return Pattern.matches(constantRegex, token);
     }
 
     private boolean isIdentifier() {
-        String identifierRegx = "^[a-zA-Z][0-9a-zA-Z]*$";
-        return Pattern.matches(identifierRegx, token);
+        String identifierRegex = "^[a-zA-Z][0-9a-zA-Z]*$";
+        return Pattern.matches(identifierRegex, token);
     }
 
-    private void setType(String str) {
+    private void setType() {
+
         if (isReserved()) {
-            setAsReserved(str);
+            this.type = TokenType.reserved;
         } else if (isIdentifier()) {
-            setAsIdentifier();
+            this.type = TokenType.identifier;
         } else if (isSign()) {
-            setAsSign();
+            this.type = TokenType.sign;
         } else if (isConstant()) {
-            setAsConstant();
+            this.type = TokenType.constant;
         }
-    }
-
-    private void setAsConstant() {
-        this.value = token;
-        this.type = TokenType.constant;
-    }
-
-    private void setAsSign() {
-        this.value = token;
-        this.type = TokenType.sign;
-    }
-
-    private void setAsIdentifier() {
-        this.value = token;
-        this.type = TokenType.identifier;
-    }
-
-    private void setAsReserved(String str) {
-        this.value = str;
-        this.type = TokenType.reserved;
     }
 
 }
