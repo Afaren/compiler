@@ -56,21 +56,26 @@ public class Lexer {
         for (int i = 0; i < length; i++) {
 
             savedString.append(word.charAt(i));
-            current.setToken(savedString.toString());
+            stageLongestTokenToCurrent(current, savedString.toString());
             if (current.isLegalToken()) {
-                previous.setToken(current.getValue());//保存最长合法token
+                stageLongestTokenToCurrent(previous, current.getValue());
             } else {
                 saveToken(previous);
-                savedString = new StringBuilder();
-                i = backwardAChar(i);
+                i = backwardPositionToPrevious(i);
                 previous = new Token("");//新的previous，因为如果还用这个的话，会将已保存在链表中的previous替换掉
+                savedString = new StringBuilder();
+
             }
         }
         saveToken(current);
     }
 
-    private int backwardAChar(int currentPosition) {
-        return --currentPosition;//指针回退
+    private void stageLongestTokenToCurrent(Token previous, String value) {
+        previous.setToken(value);
+    }
+
+    private int backwardPositionToPrevious(int currentPosition) {
+        return --currentPosition;
     }
 
     private void saveToken(Token token) {
