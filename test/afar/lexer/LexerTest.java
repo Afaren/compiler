@@ -33,15 +33,15 @@ public class LexerTest extends TestCase {
         pascalLexer = null;
     }
 
-    public void test_error_string() throws Exception {
-        final String error_string = "100a + b;";
-        String failMessage = "error should have been raised, but not";
-        final String expected_massage = "java.lang.Error: 100a is a bad token";
+    public void test_parse_illegal_expression_should_raise_error() throws Exception {
+        final String illegalExpression = "100a + b;";
+        final String failMessage = "error should have been raised, but not";
+        final String expectedMassage = "java.lang.Error: 100a is a bad token";
         try {
-            tokenDirectoryActual = pascalLexer.tokenize(error_string);
+            tokenDirectoryActual = pascalLexer.tokenize(illegalExpression);
             fail(failMessage);
-        } catch (Error actual) {
-            assertEquals("error message should equals", expected_massage, actual.toString());
+        } catch (Error error) {
+            assertEquals("error message should equals", expectedMassage, error.toString());
         }
     }
 
