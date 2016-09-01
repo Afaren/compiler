@@ -3,21 +3,35 @@ package afar.lexer;
 import afar.tokenizer.Token;
 import junit.framework.TestCase;
 
+import java.util.Arrays;
+
 /**
  * Created by Afar on 2016/4/10.
  */
 public class TokenTest extends TestCase {
 
-    public void test_type_of_keyword_program() throws Exception {
-        Token program = new Token("program");
-        assertEquals(Token.TokenType.reserved, program.getType());
-    }
 
-    public void test_value_of_keyword_program() throws Exception {
-        String keyword = "program";
-        Token program = new Token(keyword);
-        String expectedValue = keyword;
-        assertEquals(expectedValue, program.getValue());
+    public void test_type_and_value_of_keyword_program() throws Exception {
+        String[] keywords = {
+                "program",
+                "begin",
+                "end",
+                "var",
+                "integer",
+                "while",
+                "if",
+                "then",
+                "else",
+                "do",
+                "procedure",
+        };
+        Arrays.stream(keywords).forEach((word) -> {
+            Token program = new Token(word);
+            String expectedValue = word;
+            assertEquals(Token.TokenType.reserved, program.getType());
+            assertEquals(expectedValue, program.getValue());
+        });
+
     }
 
     public void test_type_and_value_of_identifier() throws Exception {
