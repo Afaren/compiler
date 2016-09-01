@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,138 +14,23 @@ import java.util.List;
  */
 public class LexerTest extends TestCase {
 
-    private List<Token> tokenDirectory_expected;
-    private List<Token> tokenDirectory_actual;
-    private Lexer pascal_lexer;
+    private List<Token> tokenDirectoryExpected;
+    private List<Token> tokenDirectoryActual;
+    private Lexer pascalLexer;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        // 在每个单词后面添加空格，使得现在的模式能够成功分割每个单词
-        tokenDirectory_expected = new ArrayList<>();
-        pascal_lexer = new Lexer();
+        tokenDirectoryExpected = new ArrayList<>();
+        pascalLexer = new Lexer();
     }
 
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
-        tokenDirectory_expected = null;
-        tokenDirectory_actual = null;
-        pascal_lexer = null;
-    }
-
-    public void test_parse_local_string_with_space_between_token() throws Exception {
-        // 必须先重写hash跟equals方法才可以这样比较
-        String pascal_source_with_space = "program afar ; begin end . ";
-        tokenDirectory_actual = pascal_lexer.tokenize(pascal_source_with_space);
-        tokenDirectory_expected.add(new Token("program"));
-        tokenDirectory_expected.add(new Token("afar"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("begin"));
-        tokenDirectory_expected.add(new Token("end"));
-        tokenDirectory_expected.add(new Token("."));
-        assertTrue("tokenDirectory should contains program", tokenDirectory_actual.contains(new Token("program")));
-        assertTrue("tokenDirectory should contains afar", tokenDirectory_actual.contains(new Token("afar")));
-        assertTrue("tokenDirectory should contains ;", tokenDirectory_actual.contains(new Token(";")));
-        assertTrue("tokenDirectory should contains begin", tokenDirectory_actual.contains(new Token("begin")));
-        assertTrue("tokenDirectory should contains end", tokenDirectory_actual.contains(new Token("end")));
-        assertTrue("tokenDirectory should contains .", tokenDirectory_actual.contains(new Token(".")));
-        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
-    }
-
-    public void test_parse_source_file_without_space_between_token_input_string() throws Exception {
-        final String fileName = "pascal_source_file_3_without_space_between_token";
-        tokenDirectory_expected.add(new Token("program"));
-        tokenDirectory_expected.add(new Token("afar"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("var"));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token(","));
-        tokenDirectory_expected.add(new Token("sum"));
-        tokenDirectory_expected.add(new Token(":"));
-        tokenDirectory_expected.add(new Token("integer"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("begin"));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token("="));
-        tokenDirectory_expected.add(new Token("1"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("sum"));
-        tokenDirectory_expected.add(new Token(":="));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("end"));
-        tokenDirectory_expected.add(new Token("."));
-        SourceFileReader sourceFileReader = new SourceFileReader(fileName);
-        String sourceString = sourceFileReader.getSourceString();
-        tokenDirectory_actual = new Lexer().tokenize(sourceString);
-        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
-
-    }
-
-    public void test_parse_source_file_with_space_between_token_input_string() throws Exception {
-
-        final String fileName = "pascal_source_file_2_with_space_between_token";
-        tokenDirectory_expected.add(new Token("program"));
-        tokenDirectory_expected.add(new Token("afar"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("var"));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token(","));
-        tokenDirectory_expected.add(new Token("sum"));
-        tokenDirectory_expected.add(new Token(":"));
-        tokenDirectory_expected.add(new Token("integer"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("begin"));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token("="));
-        tokenDirectory_expected.add(new Token("1"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("sum"));
-        tokenDirectory_expected.add(new Token(":="));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("end"));
-        tokenDirectory_expected.add(new Token("."));
-        SourceFileReader sourceFileReader = new SourceFileReader(fileName);
-        String sourceString = sourceFileReader.getSourceString();
-        tokenDirectory_actual = new Lexer().tokenize(sourceString);
-        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
-    }
-
-    public void test_parse_local_string_without_space_between_token() throws Exception {
-
-        // 两个token连在一起的问题可以解决了
-        // 目前无法处理一下这种三个token连在一起的情况，递归程序有问题，不够完善
-        final String pascal_source_without_space = "program afar;begin end.";
-        tokenDirectory_actual = pascal_lexer.tokenize(pascal_source_without_space);
-        tokenDirectory_expected.add(new Token("program"));
-        tokenDirectory_expected.add(new Token("afar"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("begin"));
-        tokenDirectory_expected.add(new Token("end"));
-        tokenDirectory_expected.add(new Token("."));
-//        tokenDirectory_actual.forEach(System.out::println);
-        assertTrue("tokenDirectory should contains program", tokenDirectory_actual.contains(new Token("program")));
-        assertTrue("tokenDirectory should contains afar", tokenDirectory_actual.contains(new Token("afar")));
-        assertTrue("tokenDirectory should contains ;", tokenDirectory_actual.contains(new Token(";")));
-        assertTrue("tokenDirectory should contains begin", tokenDirectory_actual.contains(new Token("begin")));
-        assertTrue("tokenDirectory should contains end", tokenDirectory_actual.contains(new Token("end")));
-        assertTrue("tokenDirectory should contains .", tokenDirectory_actual.contains(new Token(".")));
-        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
-    }
-
-    public void test_without_space_between_token() throws Exception {
-
-        final String string_without_space = "afar;";
-        tokenDirectory_actual = pascal_lexer.tokenize(string_without_space);
-        tokenDirectory_expected.add(new Token("afar"));
-        tokenDirectory_expected.add(new Token(";"));
-        final int expected_size = 2;
-        assertEquals("size should be 2", expected_size, tokenDirectory_actual.size());
-        assertTrue("tokenDirectory should contains afar", tokenDirectory_actual.contains(new Token("afar")));
-        assertTrue("tokenDirectory should contains ;", tokenDirectory_actual.contains(new Token(";")));
-        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
+        tokenDirectoryExpected = null;
+        tokenDirectoryActual = null;
+        pascalLexer = null;
     }
 
     public void test_error_string() throws Exception {
@@ -152,7 +38,7 @@ public class LexerTest extends TestCase {
         String failMessage = "error should have been raised, but not";
         final String expected_massage = "java.lang.Error: 100a is a bad token";
         try {
-            tokenDirectory_actual = pascal_lexer.tokenize(error_string);
+            tokenDirectoryActual = pascalLexer.tokenize(error_string);
             fail(failMessage);
         } catch (Error actual) {
             assertEquals("error message should equals", expected_massage, actual.toString());
@@ -161,51 +47,116 @@ public class LexerTest extends TestCase {
 
     public void test_arithmetic_expression() throws Exception {
         final String expression = "100-a;";
-        tokenDirectory_actual = pascal_lexer.tokenize(expression);
-        tokenDirectory_expected.add(new Token("100"));
-        tokenDirectory_expected.add(new Token("-"));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token(";"));
-        Assert.assertArrayEquals("'100-a;' should have 4 token", tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
+        String[] texts = {
+                "100",
+                "-",
+                "a",
+                ";"
+        };
+        testParseStringInLocal(expression, texts);
     }
 
-    public void testWithoutSpaceBetweenToken_2() throws Exception {
-
-        final String string_without_space = "(a>0)and**';.<=<>";
-        tokenDirectory_actual = pascal_lexer.tokenize(string_without_space);
-        tokenDirectory_expected.add(new Token("("));
-        tokenDirectory_expected.add(new Token("a"));
-        tokenDirectory_expected.add(new Token(">"));
-        tokenDirectory_expected.add(new Token("0"));
-        tokenDirectory_expected.add(new Token(")"));
-        tokenDirectory_expected.add(new Token("and"));
-        tokenDirectory_expected.add(new Token("*"));
-        tokenDirectory_expected.add(new Token("*"));
-        tokenDirectory_expected.add(new Token("'"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("."));
-        tokenDirectory_expected.add(new Token("<="));
-        tokenDirectory_expected.add(new Token("<>"));
-//        tokenDirectory_expected.add(new Token("."));
-//        tokenDirectory_expected.add(new Token("."));
-
-        final int expected_size = 13;
-        assertEquals(expected_size, tokenDirectory_actual.size());
-        assertTrue("tokenDirectory should contains (", tokenDirectory_actual.contains(new Token("(")));
-        assertTrue("tokenDirectory should contains a", tokenDirectory_actual.contains(new Token("a")));
-        assertTrue("tokenDirectory should contains >", tokenDirectory_actual.contains(new Token(">")));
-        assertTrue("tokenDirectory should contains 0", tokenDirectory_actual.contains(new Token("0")));
-        assertTrue("tokenDirectory should contains )", tokenDirectory_actual.contains(new Token(")")));
-        assertTrue("tokenDirectory should contains and", tokenDirectory_actual.contains(new Token("and")));
-
-        assertTrue("tokenDirectory should contains *", tokenDirectory_actual.contains(new Token("*")));
-        assertTrue("tokenDirectory should contains *", tokenDirectory_actual.contains(new Token("*")));
-        assertTrue("tokenDirectory should contains '", tokenDirectory_actual.contains(new Token("'")));
-        assertTrue("tokenDirectory should contains ;", tokenDirectory_actual.contains(new Token(";")));
-        assertTrue("tokenDirectory should contains <=", tokenDirectory_actual.contains(new Token("<=")));
-        assertTrue("tokenDirectory should contains <>", tokenDirectory_actual.contains(new Token("<>")));
-//        assertTrue("tokenDirectory should contains .", tokenDirectory_actual.contains(new Token(".")));
-
-        Assert.assertArrayEquals(tokenDirectory_expected.toArray(), tokenDirectory_actual.toArray());
+    public void test_parse_local_string_with_space_between_token() throws Exception {
+        String pascal_source_with_space = "program afar ; begin end . ";
+        String[] texts = {
+                "program",
+                "afar",
+                ";",
+                "begin",
+                "end",
+                "."
+        };
+        testParseStringInLocal(pascal_source_with_space, texts);
     }
+
+    public void test_parse_local_string_without_space_between_token() throws Exception {
+        final String pascalSourceWithoutSpace = "program afar;begin end.";
+        String[] texts = {
+                "program",
+                "afar",
+                ";",
+                "begin",
+                "end",
+                "."
+        };
+        testParseStringInLocal(pascalSourceWithoutSpace, texts);
+
+        final String anotherSourceWithoutSpace = "(a>0)and**';.<=<>";
+        texts = new String[]{
+                "(",
+                "a",
+                ">",
+                "0",
+                ")",
+                "and",
+                "*",
+                "*",
+                "'",
+                ";",
+                ".",
+                "<=",
+                "<>"
+        };
+        testParseStringInLocal(anotherSourceWithoutSpace, texts);
+
+    }
+
+    public void test_parse_source_file_without_space_between_token_input_string() throws Exception {
+        final String fileName = "pascal_source_file_3_without_space_between_token";
+        testParseStringReadFromFile(fileName);
+
+    }
+
+    public void test_parse_source_file_with_space_between_token_input_string() throws Exception {
+        final String fileName = "pascal_source_file_2_with_space_between_token";
+        testParseStringReadFromFile(fileName);
+    }
+
+    private void testParseStringInLocal(String sourceCode, String[] texts) {
+
+        tokenDirectoryActual = pascalLexer.tokenize(sourceCode);
+        Arrays.stream(texts)
+                .forEach(text -> tokenDirectoryExpected.add(new Token(text)));
+        Arrays.stream(texts)
+                .forEach(text -> assertTrue("tokenDirectory should contains " + text, tokenDirectoryActual.contains(new Token(text))));
+        Assert.assertArrayEquals(tokenDirectoryExpected.toArray(), tokenDirectoryActual.toArray());
+    }
+
+    private void testParseStringReadFromFile(String fileName) {
+
+
+        String[] texts = {
+                "program",
+                "afar",
+                ";",
+                "var",
+                "a",
+                ",",
+                "sum",
+                ":",
+                "integer",
+                ";",
+                "begin",
+                "a",
+                "=",
+                "1",
+                ";",
+                "sum",
+                ":=",
+                "a",
+                ";",
+                "end",
+                "."
+        };
+
+        SourceFileReader sourceFileReader = new SourceFileReader(fileName);
+        String sourceString = sourceFileReader.getSourceString();
+
+        // call local
+        testParseStringInLocal(sourceString, texts);
+
+    }
+
+
 }
+
