@@ -42,17 +42,18 @@ public class Lexer {
     **    即 previous->next = previous->next->next
     **    在单链表中可以只用一个previous指针，但是这里得用current来记录
      */
-    private void splitIllegalTokenToSeveralTokens(String illegal_token_string_need_to_process_more_step) {
-        int length = illegal_token_string_need_to_process_more_step.length();
+    private void splitIllegalTokenToSeveralTokens(String illegal) {
+        int length = illegal.length();
         if (length < 1)
             return;
-        String word = illegal_token_string_need_to_process_more_step;
+        String word = illegal;
         Token current = new Token("");
         Token previous = new Token("");
         StringBuilder savedString = new StringBuilder();
              /*
                 增加找到100a此类的词法错误
              */
+        // todo remove this badNumber check, it isn't responsibility of Lexer
         if (Character.isDigit(word.charAt(0)))
             isBadNumber(word);
 
@@ -89,7 +90,7 @@ public class Lexer {
         }
 
 
-}
+    }
 
     private int backwardAChar(int currentPosition) {
         return --currentPosition;//指针回退
