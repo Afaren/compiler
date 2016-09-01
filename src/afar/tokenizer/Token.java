@@ -2,6 +2,9 @@ package afar.tokenizer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -20,44 +23,54 @@ public class Token implements Serializable {
 
     static {
         reservedWordDirectory = new ArrayList<>();
-        reservedWordDirectory.add("program");
-        reservedWordDirectory.add("begin");
-        reservedWordDirectory.add("end");
-        reservedWordDirectory.add("var");
-        reservedWordDirectory.add("integer");
-        reservedWordDirectory.add("while");
-        reservedWordDirectory.add("if");
-        reservedWordDirectory.add("then");
-        reservedWordDirectory.add("else");
-        reservedWordDirectory.add("do");
-        reservedWordDirectory.add("procedure");
+
+        String[] reservedWords = {
+                "program",
+                "begin",
+                "end",
+                "var",
+                "integer",
+                "while",
+                "if",
+                "then",
+                "else",
+                "do",
+                "procedure"
+        };
+        Arrays.stream(reservedWords).forEach(word -> reservedWordDirectory.add(word));
+
     }
 
+    //todo 修改 signDirectory，不使用静态初始化
     private static ArrayList<String> signDirectory;
 
     static {
         signDirectory = new ArrayList<>();
-        signDirectory.add("+");
-        signDirectory.add("-");
-        signDirectory.add("*");
-        signDirectory.add("/");
-        signDirectory.add("=");
-        signDirectory.add("<>");
-        signDirectory.add("<=");
-        signDirectory.add(">=");
-        signDirectory.add(">");
-        signDirectory.add("<");
-        signDirectory.add("(");
-        signDirectory.add(")");
-        signDirectory.add(":=");
-        signDirectory.add(",");
-        signDirectory.add(".");
-        signDirectory.add(";");
-        signDirectory.add(":");
-        signDirectory.add("'");
-        signDirectory.add("^");
-        signDirectory.add("@");
-        signDirectory.add("$");
+        String[] signs = {
+                "+",
+                "-",
+                "*",
+                "/",
+                "=",
+                "<>",
+                "<=",
+                ">=",
+                ">",
+                "<",
+                "(",
+                ")",
+                ":=",
+                ",",
+                ".",
+                ";",
+                ":",
+                "'",
+                "^",
+                "@",
+                "$"
+        };
+        Arrays.stream(signs).forEach(sign -> signDirectory.add(sign));
+
     }
 
     public Token(String str) {
