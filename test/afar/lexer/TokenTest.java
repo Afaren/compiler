@@ -40,9 +40,8 @@ public class TokenTest extends TestCase {
                 "foo",
                 "bar",
                 "BAQ",
-                // todo fix bug to pass these identifiers containing underscore
-                //  "x_1",
-                //  "_2"
+                "x_1",
+                "_2"
 
         };
         Arrays.stream(identifiers).forEach(identifier -> {
