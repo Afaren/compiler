@@ -61,7 +61,7 @@ public class Lexer {
             savedString.append(word.charAt(i));
             current.setToken(savedString.toString());
             if (current.isLegalToken()) {
-                previous.setToken(current.getToken());//保存最长合法token
+                previous.setToken(current.getValue());//保存最长合法token
             } else {
                 saveToken(previous);
                 savedString = new StringBuilder();

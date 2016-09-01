@@ -3,15 +3,12 @@ package afar.tokenizer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
  * Created by Afar on 2016/4/10.
  */
 public class Token implements Serializable {
-    private String token;
     private String value;
     private TokenType type;
 
@@ -74,7 +71,6 @@ public class Token implements Serializable {
     }
 
     public Token(String str) {
-        this.token = str;
         this.value = str;
         setType();
     }
@@ -88,73 +84,55 @@ public class Token implements Serializable {
     }
 
     public void setToken(String token) {
-        this.token = token;
         this.value = token;
-
         setType();
     }
 
-    public String getToken() {
-        return token;
-    }
 
     public void reset() {
-        token = null;
         type = null;
         value = null;
     }
 
     @Override
-    public String toString() {
-        return "Token{" +
-                "token='" + token + '\'' +
-                ", value='" + value + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Token)) return false;
 
-        Token token1 = (Token) o;
+        Token token = (Token) o;
 
-        if (!token.equals(token1.token)) return false;
-        if (!value.equals(token1.value)) return false;
-        return type.equals(token1.type);
+        if (!getValue().equals(token.getValue())) return false;
+        return getType() == token.getType();
 
     }
 
     @Override
     public int hashCode() {
-        int result = token.hashCode();
-        result = 31 * result + value.hashCode();
-        result = 31 * result + type.hashCode();
+        int result = getValue().hashCode();
+        result = 31 * result + getType().hashCode();
         return result;
     }
-
 
     public boolean isLegalToken() {
         return isSign() || isIdentifier() || isConstant() || isReserved();
     }
 
     private boolean isSign() {
-        return signDirectory.contains(token);
+        return signDirectory.contains(value);
     }
 
     private boolean isReserved() {
-        return reservedWordDirectory.contains(token);
+        return reservedWordDirectory.contains(value);
     }
 
     private boolean isConstant() {
         String constantRegex = "^[\\d]+[\\.]?[\\d]*$";
-        return Pattern.matches(constantRegex, token);
+        return Pattern.matches(constantRegex, value);
     }
 
     private boolean isIdentifier() {
         String identifierRegex = "^[_a-zA-Z]_?[0-9a-zA-Z]*$";
-        return Pattern.matches(identifierRegex, token);
+        return Pattern.matches(identifierRegex, value);
     }
 
     private void setType() {
