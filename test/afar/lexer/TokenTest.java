@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class TokenTest extends TestCase {
 
 
-    public void test_type_and_value_of_keyword_program() throws Exception {
+    public void test_type_and_value_of_keyword() throws Exception {
         String[] keywords = {
                 "program",
                 "begin",
@@ -26,83 +26,94 @@ public class TokenTest extends TestCase {
                 "procedure",
         };
         Arrays.stream(keywords).forEach((word) -> {
-            Token program = new Token(word);
+            Token token = new Token(word);
             String expectedValue = word;
-            assertEquals(Token.TokenType.reserved, program.getType());
-            assertEquals(expectedValue, program.getValue());
+            assertEquals(Token.TokenType.reserved, token.getType());
+            assertEquals(expectedValue, token.getValue());
         });
 
     }
 
     public void test_type_and_value_of_identifier() throws Exception {
-        String identifier = "afar";
-        Token afar = new Token(identifier);
-        String expectedValue = identifier;
-        assertEquals(expectedValue, afar.getValue());
-        assertEquals(Token.TokenType.identifier, afar.getType());
-    }
+        String[] identifiers = {
+                "afar",
+                "foo",
+                "bar",
+                "BAQ",
+                // todo fix bug to pass these identifiers containing underscore
+                //  "x_1",
+                //  "_2"
 
-    public void test_constants() throws Exception {
-        final String DOUBLE_CONSTANT = "100.10";
-        Token constant = new Token(DOUBLE_CONSTANT);
-        final String expectedValue = DOUBLE_CONSTANT;
-        assertEquals(Token.TokenType.constant, constant.getType());
-        assertEquals(expectedValue, constant.getValue());
-
+        };
+        Arrays.stream(identifiers).forEach(identifier -> {
+            Token token = new Token(identifier);
+            final String expectedValue = identifier;
+            assertEquals(expectedValue, token.getValue());
+            assertEquals(token + " should be a identifier", Token.TokenType.identifier, token.getType());
+        });
     }
 
     public void test_legal_constant() throws Exception {
-        final String INT_CONSTANT = "100";
-        final String DOUBLE_CONSTANT = "100.10";
-        Token double_constant = new Token(DOUBLE_CONSTANT);
-        assertTrue("double constant is legal token", double_constant.isLegalToken());
-        Token int_constant = new Token(INT_CONSTANT);
-        assertTrue("int constant is legal token", int_constant.isLegalToken());
+        String[] constants = {
+                "100",
+                "100.11",
+                "0.100"
+
+        };
+        Arrays.stream(constants).forEach(constant -> {
+            Token token = new Token(constant);
+            final String expectedValue = constant;
+            assertTrue(token + " is a legal constant token", token.isLegalToken());
+            assertEquals(Token.TokenType.constant, token.getType());
+            assertEquals(expectedValue, token.getValue());
+
+        });
     }
 
     public void test_illegal_constant() throws Exception {
-
-        //todo 用数组的形式减少冗余代码
-
-        String bad_int_constant = "100x";
-        badConstantToken(bad_int_constant);
-
-
-        String bad_double_constant = "100.10x";
-        badConstantToken(bad_double_constant);
-
-        bad_double_constant = "x100.10";
-        badConstantToken(bad_double_constant);
-
-
-        bad_double_constant = "1x0.10";
-        badConstantToken(bad_double_constant);
-
-
+        String[] badConstants = {
+                "100x",
+                "1x00",
+                              /* "x100" is identifier but not constant*/
+                "100.00x",
+                "x100.00",
+                "1x00,00"
+        };
+        Arrays.stream(badConstants).forEach(bad -> {
+            Token token = new Token(bad);
+            assertFalse(bad + " is a bad constant token", token.isLegalToken());
+        });
     }
 
     public void test_sign_as_legal_token() throws Exception {
-        // todo 这里也可以用数组的方式来减少冗余
-        final String sign_1 = ";";
-        final String sign_2 = "*";
-        final String sign_3 = ".";
-        final String sign_4 = "=";
-        Token sign_token_1 = new Token(sign_1);
-        Token sign_token_2 = new Token(sign_2);
-        Token sign_token_3 = new Token(sign_3);
-        Token sign_token_4 = new Token(sign_4);
-        boolean legal_1 = sign_token_1.isLegalToken();
-        boolean legal_2 = sign_token_2.isLegalToken();
-        boolean legal_3 = sign_token_3.isLegalToken();
-        boolean legal_4 = sign_token_4.isLegalToken();
-
-        assertTrue("'; * . =', these signs are legal token", legal_1 && legal_2 && legal_3 && legal_4);
-
+        String[] signs = {
+                "+",
+                "-",
+                "*",
+                "/",
+                "=",
+                "<>",
+                "<=",
+                ">=",
+                ">",
+                "<",
+                "(",
+                ")",
+                ":=",
+                ",",
+                ".",
+                ";",
+                ":",
+                "'",
+                "^",
+                "@",
+                "$",
+        };
+        Arrays.stream(signs).forEach(sign -> {
+            Token token = new Token(sign);
+            assertTrue(token + " is a legal sign", token.isLegalToken());
+        });
     }
 
 
-    private void badConstantToken(String constant) {
-        Token int_constant = new Token(constant);
-        assertFalse("bad constant token", int_constant.isLegalToken());
-    }
 }
