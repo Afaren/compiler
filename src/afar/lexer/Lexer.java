@@ -3,6 +3,7 @@ package afar.lexer;
 import afar.tokenizer.Token;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,21 +22,22 @@ public class Lexer {
     **    用空格分割的token不合法，则进一步使用贪心算法重新分析这个token
      */
     public List<Token> tokenize(String source) {
-        String[] words = source.split(" ");
-        for (String word : words) {
-            Token current = new Token(word);
-            if (current.isLegalToken()) {
-                tokenDirectory.add(current);
-            } else {
-                splitIllegalTokenToSeveralTokens(word);
-            }
-        }
+        // todo here should use reduce
+        Arrays.stream(source.split(" "))
+                .forEach(word -> {
+                    Token current = new Token(word);
+                    if (current.isLegalToken()) {
+                        tokenDirectory.add(current);
+                    } else {
+                        splitIllegalTokenToSeveralTokens(word);
+                    }
+                });
         return tokenDirectory;
     }
 
     /*
     ** 包装函数
-    ** input: a_string_build_a_illegal_token
+    ** input: illegal token
     ** output: several legal tokens
     **    借用了在单链表中删除一个元素的方法
     **    在单链表中，为了删除一个元素，需要将被删元素的前驱的next设为被删元素的后继
@@ -50,12 +52,6 @@ public class Lexer {
         Token current = new Token("");
         Token previous = new Token("");
         StringBuilder savedString = new StringBuilder();
-             /*
-                增加找到100a此类的词法错误
-             */
-        // todo remove this badNumber check, it isn't responsibility of Lexer
-        if (Character.isDigit(word.charAt(0)))
-            isBadNumber(word);
 
         for (int i = 0; i < length; i++) {
 
@@ -71,25 +67,6 @@ public class Lexer {
             }
         }
         saveToken(current);
-    }
-
-    private void isBadNumber(String word) {
-
-        StringBuilder savedString = new StringBuilder();
-        savedString.append(word.charAt(0));
-        int i = 1;
-
-        while (Character.isDigit(word.charAt(i))) {
-            savedString.append(word.charAt(i));
-            i++;
-        }
-        // 数字之后紧跟着字母，抛出异常
-        if (Character.isLetter(word.charAt(i))) {
-            savedString.append(word.charAt(i));
-            throw new Error(savedString + " is a bad token");
-        }
-
-
     }
 
     private int backwardAChar(int currentPosition) {
