@@ -140,6 +140,7 @@ public class Token implements Serializable {
     }
 
     private boolean isIdentifier() {
+        // todo 修改规则使其满足下划线开头及中间含有下划线的标识符
         String identifierRegex = "^[a-zA-Z][0-9a-zA-Z]*$";
         return Pattern.matches(identifierRegex, token);
     }
