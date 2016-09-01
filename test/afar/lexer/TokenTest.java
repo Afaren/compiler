@@ -28,7 +28,7 @@ public class TokenTest extends TestCase {
         Arrays.stream(keywords).forEach((word) -> {
             Token token = new Token(word);
             String expectedValue = word;
-            assertEquals(Token.TokenType.reserved, token.getType());
+            assertEquals(token + " should be a reserved word", Token.TokenType.reserved, token.getType());
             assertEquals(expectedValue, token.getValue());
         });
 
@@ -42,7 +42,6 @@ public class TokenTest extends TestCase {
                 "BAQ",
                 "x_1",
                 "_2"
-
         };
         Arrays.stream(identifiers).forEach(identifier -> {
             Token token = new Token(identifier);
@@ -111,6 +110,10 @@ public class TokenTest extends TestCase {
         Arrays.stream(signs).forEach(sign -> {
             Token token = new Token(sign);
             assertTrue(token + " is a legal sign", token.isLegalToken());
+            assertEquals(token + " should be a sign", Token.TokenType.sign, token.getType());
+            final String expectedValue = sign;
+            assertEquals(expectedValue, token.getValue());
+
         });
     }
 
