@@ -22,7 +22,7 @@ public class Lexer {
     **    用空格分割的token不合法，则进一步使用贪心算法重新分析这个token
      */
     public List<Token> tokenize(String source) {
-        // todo here should use reduce
+
         Arrays.stream(source.split(" "))
                 .forEach(word -> {
                     Token current = new Token(word);
@@ -40,7 +40,7 @@ public class Lexer {
     ** input: illegal token
     ** output: several legal tokens
     **    借用了在单链表中删除一个元素的方法
-    **    在单链表中，为了删除一个元素，需要将被删元素的前驱的next设为被删元素的后继
+    **    在单链表中，为了删除一个元素，需要将被删元素的前驱的next设为被删元素的next
     **    即 previous->next = previous->next->next
     **    在单链表中可以只用一个previous指针，但是这里得用current来记录
      */
@@ -56,21 +56,26 @@ public class Lexer {
         for (int i = 0; i < length; i++) {
 
             savedString.append(word.charAt(i));
-            stageLongestTokenToCurrent(current, savedString.toString());
+            stageLongestTokenTo(current, savedString.toString());
             if (current.isLegalToken()) {
-                stageLongestTokenToCurrent(previous, current.getValue());
+                stageLongestTokenTo(previous, current.getValue());
             } else {
-                saveToken(previous);
+                previous = saveLongestLegalTokenAndReset(previous);
                 i = backwardPositionToPrevious(i);
-                previous = new Token("");//新的previous，因为如果还用这个的话，会将已保存在链表中的previous替换掉
                 savedString = new StringBuilder();
 
             }
         }
-        saveToken(current);
+        tokenDirectory.add(current);
     }
 
-    private void stageLongestTokenToCurrent(Token previous, String value) {
+    private Token saveLongestLegalTokenAndReset(Token previous) {
+        tokenDirectory.add(previous);
+        previous = new Token("");//新的previous，因为如果还用这个的话，会将已保存在链表中的previous替换掉
+        return previous;
+    }
+
+    private void stageLongestTokenTo(Token previous, String value) {
         previous.setToken(value);
     }
 
@@ -78,7 +83,4 @@ public class Lexer {
         return --currentPosition;
     }
 
-    private void saveToken(Token token) {
-        tokenDirectory.add(token);
-    }
 }
