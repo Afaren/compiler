@@ -12,57 +12,54 @@ public class ParserTest extends TestCase {
         parser = new Parser();
     }
 
-    public void tearDown() throws Exception {
-    }
-
-    public void test_error_programName() throws Exception {
-        final String source_program = "program program ; begin end .";
-        boolean raiseOut = willRaiseOutError(source_program);
+    public void test_raise_error_when_given_a_illegal_programName() throws Exception {
+        final String source_code = "program program ; begin end .";
+        boolean raiseOut = willRaiseOutError(source_code);
         assertFalse(raiseOut);
 
     }
 
     public void test_simplest_source_pascal_program() throws Exception {
-        final String source_program = "program afar ; begin end . ";
-        boolean accepted = isAccepted(source_program);
+        final String source_code = "program afar ; begin end . ";
+        boolean accepted = isAccepted(source_code);
         assertEquals("should accept this source program", true, accepted);
     }
 
-    public void test_source_program_with_single_variable_specification() throws Exception {
-        final String source_program = "program afar; var a : integer; begin end . ";
-        boolean accepted = isAccepted(source_program);
+    public void test_single_variable_specification() throws Exception {
+        final String source_code = "program afar; var a : integer; begin end . ";
+        boolean accepted = isAccepted(source_code);
         assertEquals("should accept this source program", true, accepted);
     }
 
-    public void test_source_program_with_multiply_variable_specification() throws Exception {
-        final String source_program = "program afar; var a, b, c : integer; begin end . ";
-        boolean accepted = isAccepted(source_program);
+    public void test_multiply_variable_specification() throws Exception {
+        final String source_code = "program afar; var a, b, c : integer; begin end . ";
+        boolean accepted = isAccepted(source_code);
         assertEquals("should accept this source program", true, accepted);
     }
 
-    public void test_source_program_with_single_statement_table() throws Exception {
+    public void test_single_statement_table() throws Exception {
 
-        final String source_program = "program afar; var a : integer; begin a:=2;  end . ";
-        boolean accepted = isAccepted(source_program);
+        final String source_code = "program afar; var a : integer; begin a:=2;  end . ";
+        boolean accepted = isAccepted(source_code);
         assertEquals("should accept this source program", true, accepted);
     }
 
-    public void test_source_program_with_multiply_variable_specification_and_multiply_statement_table() throws Exception {
+    public void test_multiply_variable_specification_and_multiply_statement_table() throws Exception {
 
-        final String source_program = "program afar; var a, b, c : integer; begin a:=2; b:=3; end . ";
-        boolean accepted = isAccepted(source_program);
+        final String source_code = "program afar; var a, b, c : integer; begin a:=2; b:=3; end . ";
+        boolean accepted = isAccepted(source_code);
         assertEquals("should accept this source program", true, accepted);
     }
 
-    public void test_source_program_with_assign_statement_with_arithmetic_expression_2_add_3() throws Exception {
-        final String source_program = "program afar; var a: integer; begin a:=2+3; end . ";
-        boolean accepted = isAccepted(source_program);
+    public void test_assign_statement_with_arithmetic_expression_2_add_3() throws Exception {
+        final String source_code = "program afar; var a: integer; begin a:=2+3; end . ";
+        boolean accepted = isAccepted(source_code);
         assertEquals("should accept this source program", true, accepted);
     }
 
-    public void test_source_program_with_assign_statement_with_arithmetic_expression_expect_error_arise() throws Exception {
-        final String source_program = "program afar; var a: integer; begin a:=2+; end . ";
-        boolean accepted = willRaiseOutError(source_program);
+    public void test_assign_statement_with_arithmetic_expression_expect_error_arise() throws Exception {
+        final String source_code = "program afar; var a: integer; begin a:=2+; end . ";
+        boolean accepted = willRaiseOutError(source_code);
         assertFalse(accepted);
     }
 

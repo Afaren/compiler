@@ -11,7 +11,6 @@ import java.util.List;
 public class Parser {
     private List<Token> tokenDirectory;
     private int currentPosition;
-    private Token currentToken;
     private String source;
 
     public void setSource(String source) {
@@ -23,7 +22,7 @@ public class Parser {
     }
 
     public Parser() {
-        // empty
+        // empty body
     }
 
 
@@ -47,18 +46,17 @@ public class Parser {
         matchTokenValue(";", errorMessage(";"));
     }
 
-    //"here expect a legal identifier as program name"
     private void matchProgramName() {
         matchTokenType(Token.TokenType.identifier, errorMessage("a identifier as program name"));
 
     }
 
     private void parseProgramBody() {
-        if (!currentTokenValueIs("begin")) {
+        if (!matchTokenValue("begin")) {
             matchVariableSpecification();
         }
         matchTokenValue("begin", errorMessage("begin"));
-        while (!currentTokenValueIs("end")) {
+        while (!matchTokenValue("end")) {
             parseStatementTable();
         }
         matchTokenValue("end", errorMessage("end"));
@@ -67,23 +65,16 @@ public class Parser {
 
 
     private String errorMessage(String expected) {
-        StringBuilder message = new StringBuilder();
-        message.append("here expect \"");
-        message.append(expected);
-        message.append("\" but found \"");
-        message.append(getCurrentTokenValue());
-        message.append("\"");
-        return message.toString();
+        return "here expect \"" + expected + "\" but found \"" + getCurrentTokenValue() + "\"";
     }
 
     private String getCurrentTokenValue() {
-        currentToken = tokenDirectory.get(currentPosition);
-        return currentToken.getValue();
+        return tokenDirectory.get(currentPosition).getValue();
     }
 
     private void matchVariableSpecification() {
         matchTokenValue("var", errorMessage("var"));
-        if (!currentTokenValueIs(":")) {
+        if (!matchTokenValue(":")) {
             newVariable();
         }
 
@@ -94,7 +85,7 @@ public class Parser {
 
     private void newVariable() {
         matchVariable();
-        while (currentTokenValueIs(",")) {
+        while (matchTokenValue(",")) {
             matchTokenValue(",", errorMessage(","));
             matchVariable();
         }
@@ -102,20 +93,17 @@ public class Parser {
 
     private void matchVariable() {
         matchTokenType(Token.TokenType.identifier, errorMessage("a identifier as variable name"));
-
     }
 
     private void parseStatementTable() {
+        //todo parse statements of other forms
         parseAssignStatement();
-
-
     }
 
     private void parseAssignStatement() {
         matchVariable();
         matchTokenValue(":=", errorMessage(":="));
         matchArithmeticExpression();
-//        matchTokenType(Token.TokenType.constant, errorMessage("a number"));
         matchSeparator();
     }
 
@@ -129,12 +117,11 @@ public class Parser {
     private void matchArithmeticExpression() {
         term();
 
-        while (currentTokenValueIs("+") || currentTokenValueIs("-")) {
-            if (currentTokenValueIs("+")) {
+        while (matchTokenValue("+") || matchTokenValue("-")) {
+            if (matchTokenValue("+")) {
                 matchTokenValue("+", errorMessage("+"));
                 term();
-            } else if (currentTokenValueIs("-")) {
-                // sub
+            } else if (matchTokenValue("-")) {
                 matchTokenValue("-", errorMessage("-"));
                 term();
             } else {
@@ -145,14 +132,14 @@ public class Parser {
 
     private void term() {
         factor();
-        while (currentTokenValueIs("*")) {
+        while (matchTokenValue("*")) {
             matchTokenValue("*", errorMessage("*"));
             factor();
         }
     }
 
     private void factor() {
-        if (currentTokenValueIs("(")) {
+        if (matchTokenValue("(")) {
             matchTokenValue("(", errorMessage("("));
             matchArithmeticExpression();
             matchTokenValue(")", errorMessage(")"));
@@ -162,12 +149,11 @@ public class Parser {
     }
 
     private void matchTokenValue(String value, String message) {
-        if (!currentTokenValueIs(value)) {
+        if (!matchTokenValue(value)) {
             throw new Error(message);
         }
         advance();
     }
-
 
     private void matchTokenType(Token.TokenType type, String message) {
         if (!matchTokenType(type)) {
@@ -176,18 +162,12 @@ public class Parser {
         advance();
     }
 
-    private boolean currentTokenValueIs(String value) {
-        if (value.equals(tokenDirectory.get(currentPosition).getValue())) {
-            return true;
-        }
-        return false;
+    private boolean matchTokenValue(String value) {
+        return value.equals(tokenDirectory.get(currentPosition).getValue());
     }
 
     private boolean matchTokenType(Token.TokenType type) {
-        if (type.equals(tokenDirectory.get(currentPosition).getType())) {
-            return true;
-        }
-        return false;
+        return type.equals(tokenDirectory.get(currentPosition).getType());
     }
 
     private void advance() {
