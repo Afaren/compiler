@@ -25,9 +25,9 @@ public class SourceFileReader {
             String line;
             while ((line = reader.readLine()) != null) {
                 // 加一个空格，两行就不会直接拼在一起
-                sb.append(line + " ");
+                sb.append(line.trim() + " ");
             }
-            sourceString = sb.toString();
+            sourceString = sb.toString().trim();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

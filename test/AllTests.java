@@ -1,5 +1,9 @@
-import afar.lexer.*;
+import afar.client.ClientTest;
+import afar.io.SourceFileReaderTest;
+import afar.io.TokenSaveAndFetchTest;
+import afar.lexer.LexerTest;
 import afar.parser.ParserTest;
+import afar.tokenizer.TokenTest;
 import junit.framework.TestSuite;
 
 /**

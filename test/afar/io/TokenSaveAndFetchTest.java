@@ -1,12 +1,11 @@
-package afar.lexer;
+package afar.io;
 
 import afar.io.TokenSaveAndFetch;
 import afar.tokenizer.Token;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Afar on 2016/4/13.
@@ -14,25 +13,20 @@ import java.util.List;
 public class TokenSaveAndFetchTest extends TestCase {
 
     private List<Token> tokenDirectory_expected;
-    private List<Token> loadTokenDirectory;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         tokenDirectory_expected = new ArrayList<>();
-        tokenDirectory_expected.add(new Token("program"));
-        tokenDirectory_expected.add(new Token("afar"));
-        tokenDirectory_expected.add(new Token(";"));
-        tokenDirectory_expected.add(new Token("begin"));
-        tokenDirectory_expected.add(new Token("end"));
-        tokenDirectory_expected.add(new Token("."));
-
+        String[] texts = {"program", "afar", ";", "begin", "end", "."};
+        Arrays.stream(texts)
+                .forEach(text -> tokenDirectory_expected.add(new Token(text)));
     }
 
     public void testStoreTokenIntoFile() throws Exception {
         final String fileName = "tokenListFile";
         TokenSaveAndFetch.store(fileName, tokenDirectory_expected);
-        loadTokenDirectory = TokenSaveAndFetch.load(fileName);
+        List<Token> loadTokenDirectory = TokenSaveAndFetch.load(fileName);
         Assert.assertArrayEquals(tokenDirectory_expected.toArray(), loadTokenDirectory.toArray());
 
     }

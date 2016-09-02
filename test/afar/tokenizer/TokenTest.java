@@ -1,4 +1,4 @@
-package afar.lexer;
+package afar.tokenizer;
 
 import afar.tokenizer.Token;
 import junit.framework.TestCase;
