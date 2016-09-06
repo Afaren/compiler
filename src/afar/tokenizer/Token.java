@@ -3,6 +3,7 @@ package afar.tokenizer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -12,62 +13,11 @@ public class Token implements Serializable {
     private String value;
     private TokenType type;
 
+    private static List<String> signDirectory = buildSignDirectory();
+    private static List<String> reservedWordDirectory  = buildReservedWordDirectory();
+
     public enum TokenType {
         sign, constant, identifier, reserved
-    }
-
-    private static ArrayList<String> reservedWordDirectory;
-
-    static {
-        reservedWordDirectory = new ArrayList<>();
-
-        String[] reservedWords = {
-                "program",
-                "begin",
-                "end",
-                "var",
-                "integer",
-                "while",
-                "if",
-                "then",
-                "else",
-                "do",
-                "procedure"
-        };
-        Arrays.stream(reservedWords).forEach(word -> reservedWordDirectory.add(word));
-
-    }
-
-    //todo 修改 signDirectory，不使用静态初始化
-    private static ArrayList<String> signDirectory;
-
-    static {
-        signDirectory = new ArrayList<>();
-        String[] signs = {
-                "+",
-                "-",
-                "*",
-                "/",
-                "=",
-                "<>",
-                "<=",
-                ">=",
-                ">",
-                "<",
-                "(",
-                ")",
-                ":=",
-                ",",
-                ".",
-                ";",
-                ":",
-                "'",
-                "^",
-                "@",
-                "$"
-        };
-        Arrays.stream(signs).forEach(sign -> signDirectory.add(sign));
-
     }
 
     public Token(String str) {
@@ -88,7 +38,6 @@ public class Token implements Serializable {
         setType();
     }
 
-
     public void reset() {
         type = null;
         value = null;
@@ -101,8 +50,7 @@ public class Token implements Serializable {
 
         Token token = (Token) o;
 
-        if (!getValue().equals(token.getValue())) return false;
-        return getType() == token.getType();
+        return getValue().equals(token.getValue()) && getType() == token.getType();
 
     }
 
@@ -146,6 +94,56 @@ public class Token implements Serializable {
         } else if (isConstant()) {
             this.type = TokenType.constant;
         }
+    }
+
+    private static List<String> buildDirectory(String[] words) {
+        List<String> directory = new ArrayList<>();
+        Arrays.stream(words).forEach(word -> directory.add(word));
+        return directory;
+    }
+
+    private static List<String> buildSignDirectory() {
+        String[] signs = {
+                "+",
+                "-",
+                "*",
+                "/",
+                "=",
+                "<>",
+                "<=",
+                ">=",
+                ">",
+                "<",
+                "(",
+                ")",
+                ":=",
+                ",",
+                ".",
+                ";",
+                ":",
+                "'",
+                "^",
+                "@",
+                "$"
+        };
+        return buildDirectory(signs);
+    }
+
+    private static List<String> buildReservedWordDirectory() {
+        String[] reservedWords = {
+                "program",
+                "begin",
+                "end",
+                "var",
+                "integer",
+                "while",
+                "if",
+                "then",
+                "else",
+                "do",
+                "procedure"
+        };
+        return buildDirectory(reservedWords);
     }
 
 }
