@@ -45,3 +45,7 @@ fabric.properties
 
 # generated file for test
 tokenListFilecompiler_homework.iml
+.idea/modules
+compiler.iml
+.idea
+.gradle
