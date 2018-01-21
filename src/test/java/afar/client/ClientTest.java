@@ -1,14 +1,17 @@
 package afar.client;
 
 import afar.io.SourceFileReader;
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Afar on 2016/4/15.
  */
-public class ClientTest extends TestCase {
+public class ClientTest  {
 
 
+    @Test
     public void test_client_input() throws Exception {
         final String fileName = "fixture/pascal_source_file_test_input";
         SourceFileReader sourceFileReader = new SourceFileReader(getFile(fileName));
@@ -25,7 +28,7 @@ public class ClientTest extends TestCase {
                 "else writeln('is no triangle'); " +
                 "readln " +
                 "end.";
-        assertEquals(expected, sourceString);
+        assertThat(expected).isEqualTo(sourceString);
     }
 
     private String getFile(String filename) {

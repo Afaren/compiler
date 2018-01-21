@@ -2,39 +2,41 @@ package afar.lexer;
 
 import afar.io.SourceFileReader;
 import afar.tokenizer.Token;
-import junit.framework.TestCase;
-import org.junit.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+
 /**
  * Created by Afar on 2016/4/10.
  */
-public class LexerTest extends TestCase {
+public class LexerTest {
 
     private List<Token> tokenDirectoryExpected;
     private List<Token> tokenDirectoryActual;
     private Lexer pascalLexer;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() {
         tokenDirectoryExpected = new ArrayList<>();
         pascalLexer = new Lexer();
     }
 
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() {
         tokenDirectoryExpected = null;
         tokenDirectoryActual = null;
         pascalLexer = null;
     }
 
-
-    public void test_arithmetic_expression() throws Exception {
+    @Test
+    public void test_arithmetic_expression() {
         final String expression = "100-a;";
         String[] texts = {
                 "100",
@@ -45,7 +47,8 @@ public class LexerTest extends TestCase {
         testParseStringInLocal(expression, texts);
     }
 
-    public void test_parse_local_string_with_space_between_token() throws Exception {
+    @Test
+    public void test_parse_local_string_with_space_between_token() {
         String pascal_source_with_space = "program afar ; begin end . ";
         String[] texts = {
                 "program",
@@ -58,7 +61,8 @@ public class LexerTest extends TestCase {
         testParseStringInLocal(pascal_source_with_space, texts);
     }
 
-    public void test_parse_local_string_without_space_between_token() throws Exception {
+    @Test
+    public void test_parse_local_string_without_space_between_token() {
         final String pascalSourceWithoutSpace = "program afar;begin end.";
         String[] texts = {
                 "program",
@@ -90,25 +94,26 @@ public class LexerTest extends TestCase {
 
     }
 
-    public void test_parse_source_file_without_space_between_token_input_string() throws Exception {
+    @Test
+    public void test_parse_source_file_without_space_between_token_input_string() {
         final String fileName = "fixture/pascal_source_file_3_without_space_between_token";
         testParseStringReadFromFile(getFile(fileName));
-
     }
 
-    public void test_parse_source_file_with_space_between_token_input_string() throws Exception {
+    @Test
+    public void test_parse_source_file_with_space_between_token_input_string() {
         final String fileName = "fixture/pascal_source_file_2_with_space_between_token";
         testParseStringReadFromFile(getFile(fileName));
     }
 
     private void testParseStringInLocal(String sourceCode, String[] texts) {
-
         tokenDirectoryActual = pascalLexer.tokenize(sourceCode);
         Arrays.stream(texts)
-                .forEach(text -> tokenDirectoryExpected.add(new Token(text)));
+              .forEach(text -> tokenDirectoryExpected.add(new Token(text)));
         Arrays.stream(texts)
-                .forEach(text -> assertTrue("tokenDirectory should contains " + text, tokenDirectoryActual.contains(new Token(text))));
-        Assert.assertArrayEquals(tokenDirectoryExpected.toArray(), tokenDirectoryActual.toArray());
+              .forEach(text -> assertThat(tokenDirectoryActual.contains(new Token(text))).as("tokenDirectory should contains " + text)
+                                                                                          .isTrue());
+        assertThat(tokenDirectoryExpected).isEqualTo(tokenDirectoryActual);
     }
 
     private void testParseStringReadFromFile(String fileName) {
@@ -145,6 +150,7 @@ public class LexerTest extends TestCase {
         testParseStringInLocal(sourceString, texts);
 
     }
+
     private String getFile(String filename) {
         return getClass().getClassLoader().getResource(filename).getFile();
     }

@@ -1,66 +1,80 @@
 package afar.parser;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 /**
  * Created by Afar on 2016/5/22.
  */
-public class ParserTest extends TestCase {
+public class ParserTest {
     Parser parser;
-    public void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() {
         parser = new Parser();
     }
 
-    public void test_raise_error_when_given_a_illegal_programName() throws Exception {
+    @Test
+    public void test_raise_error_when_given_a_illegal_programName() {
         final String source_code = "program program ; begin end .";
         boolean raiseOut = willRaiseOutError(source_code);
-        assertFalse(raiseOut);
+        assertThat(raiseOut).isFalse();
 
     }
 
-    public void test_simplest_source_pascal_program() throws Exception {
+    @Test
+    public void test_simplest_source_pascal_program() {
         final String source_code = "program afar ; begin end . ";
         boolean accepted = isAccepted(source_code);
-        assertEquals("should accept this source program", true, accepted);
+        assertThat(accepted).as("should accept this source program").isTrue();
     }
 
-    public void test_single_variable_specification() throws Exception {
+    @Test
+    public void test_single_variable_specification() {
         final String source_code = "program afar; var a : integer; begin end . ";
         boolean accepted = isAccepted(source_code);
-        assertEquals("should accept this source program", true, accepted);
+        assertThat(accepted).as("should accept this source program").isTrue();
     }
 
-    public void test_multiply_variable_specification() throws Exception {
+    @Test
+    public void test_multiply_variable_specification() {
         final String source_code = "program afar; var a, b, c : integer; begin end . ";
         boolean accepted = isAccepted(source_code);
-        assertEquals("should accept this source program", true, accepted);
+        assertThat(accepted).as("should accept this source program").isTrue();
     }
 
-    public void test_single_statement_table() throws Exception {
+    @Test
+    public void test_single_statement_table() {
 
         final String source_code = "program afar; var a : integer; begin a:=2;  end . ";
         boolean accepted = isAccepted(source_code);
-        assertEquals("should accept this source program", true, accepted);
+        assertThat(accepted).as("should accept this source program").isTrue();
+
     }
 
-    public void test_multiply_variable_specification_and_multiply_statement_table() throws Exception {
+    @Test
+    public void test_multiply_variable_specification_and_multiply_statement_table() {
 
         final String source_code = "program afar; var a, b, c : integer; begin a:=2; b:=3; end . ";
         boolean accepted = isAccepted(source_code);
-        assertEquals("should accept this source program", true, accepted);
+        assertThat(accepted).as("should accept this source program").isTrue();
+
     }
 
-    public void test_assign_statement_with_arithmetic_expression_2_add_3() throws Exception {
+    @Test
+    public void test_assign_statement_with_arithmetic_expression_2_add_3() {
         final String source_code = "program afar; var a: integer; begin a:=2+3; end . ";
         boolean accepted = isAccepted(source_code);
-        assertEquals("should accept this source program", true, accepted);
+        assertThat(accepted).as("should accept this source program").isTrue();
     }
 
-    public void test_assign_statement_with_arithmetic_expression_expect_error_arise() throws Exception {
+    @Test
+    public void test_assign_statement_with_arithmetic_expression_expect_error_arise() {
         final String source_code = "program afar; var a: integer; begin a:=2+; end . ";
         boolean accepted = willRaiseOutError(source_code);
-        assertFalse(accepted);
+        assertThat(accepted).isFalse();
     }
 
     private boolean willRaiseOutError(String source) {
@@ -72,10 +86,10 @@ public class ParserTest extends TestCase {
         boolean accepted = false;
         try {
             accepted = parser.parseProgram();
-            assertFalse(accepted);
+            assertThat(accepted).isFalse();
             fail("Error should have been raised, but was not");
         } catch (Error expected) {
-            assertTrue("sanity check", true);
+            assertThat(true).as("sanity check").isTrue();
         }
         return accepted;
     }

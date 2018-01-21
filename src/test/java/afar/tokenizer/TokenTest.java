@@ -1,16 +1,18 @@
 package afar.tokenizer;
 
-import afar.tokenizer.Token;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Afar on 2016/4/10.
  */
-public class TokenTest extends TestCase {
+public class TokenTest  {
 
 
+    @Test
     public void test_type_and_value_of_keyword() throws Exception {
         String[] keywords = {
                 "program",
@@ -28,12 +30,13 @@ public class TokenTest extends TestCase {
         Arrays.stream(keywords).forEach((word) -> {
             Token token = new Token(word);
             String expectedValue = word;
-            assertEquals(token + " should be a reserved word", Token.TokenType.reserved, token.getType());
-            assertEquals(expectedValue, token.getValue());
+            assertThat(Token.TokenType.reserved).as(token + " should be a reserved word").isEqualTo(token.getType());
+            assertThat(expectedValue).isEqualTo(token.getValue());
         });
 
     }
 
+    @Test
     public void test_type_and_value_of_identifier() throws Exception {
         String[] identifiers = {
                 "afar",
@@ -46,11 +49,12 @@ public class TokenTest extends TestCase {
         Arrays.stream(identifiers).forEach(identifier -> {
             Token token = new Token(identifier);
             final String expectedValue = identifier;
-            assertEquals(expectedValue, token.getValue());
-            assertEquals(token + " should be a identifier", Token.TokenType.identifier, token.getType());
+            assertThat(expectedValue).isEqualTo(token.getValue());
+            assertThat(Token.TokenType.identifier).as(token + " should be a identifier").isEqualTo(token.getType());
         });
     }
 
+    @Test
     public void test_legal_constant() throws Exception {
         String[] constants = {
                 "100",
@@ -61,13 +65,14 @@ public class TokenTest extends TestCase {
         Arrays.stream(constants).forEach(constant -> {
             Token token = new Token(constant);
             final String expectedValue = constant;
-            assertTrue(token + " is a legal constant token", token.isLegalToken());
-            assertEquals(Token.TokenType.constant, token.getType());
-            assertEquals(expectedValue, token.getValue());
+            assertThat( token.isLegalToken()).as(token + " is a legal constant token").isTrue();
+            assertThat(Token.TokenType.constant).isEqualTo(token.getType());
+            assertThat(expectedValue).isEqualTo(token.getValue());
 
         });
     }
 
+    @Test
     public void test_illegal_constant() throws Exception {
         String[] badConstants = {
                 "100x",
@@ -79,10 +84,11 @@ public class TokenTest extends TestCase {
         };
         Arrays.stream(badConstants).forEach(bad -> {
             Token token = new Token(bad);
-            assertFalse(bad + " is a bad constant token", token.isLegalToken());
+            assertThat(token.isLegalToken()).as(bad + " is a bad constant token").isFalse();
         });
     }
 
+    @Test
     public void test_sign_as_legal_token() throws Exception {
         String[] signs = {
                 "+",
@@ -109,10 +115,10 @@ public class TokenTest extends TestCase {
         };
         Arrays.stream(signs).forEach(sign -> {
             Token token = new Token(sign);
-            assertTrue(token + " is a legal sign", token.isLegalToken());
-            assertEquals(token + " should be a sign", Token.TokenType.sign, token.getType());
+            assertThat( token.isLegalToken()).as(token + " is a legal sign").isTrue();
+            assertThat(Token.TokenType.sign).as(token + " should be a sign").isEqualTo(token.getType());
             final String expectedValue = sign;
-            assertEquals(expectedValue, token.getValue());
+            assertThat(expectedValue).isEqualTo(token.getValue());
 
         });
     }
