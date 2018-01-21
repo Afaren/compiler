@@ -92,13 +92,13 @@ public class LexerTest extends TestCase {
 
     public void test_parse_source_file_without_space_between_token_input_string() throws Exception {
         final String fileName = "fixture/pascal_source_file_3_without_space_between_token";
-        testParseStringReadFromFile(fileName);
+        testParseStringReadFromFile(getFile(fileName));
 
     }
 
     public void test_parse_source_file_with_space_between_token_input_string() throws Exception {
         final String fileName = "fixture/pascal_source_file_2_with_space_between_token";
-        testParseStringReadFromFile(fileName);
+        testParseStringReadFromFile(getFile(fileName));
     }
 
     private void testParseStringInLocal(String sourceCode, String[] texts) {
@@ -145,7 +145,9 @@ public class LexerTest extends TestCase {
         testParseStringInLocal(sourceString, texts);
 
     }
-
+    private String getFile(String filename) {
+        return getClass().getClassLoader().getResource(filename).getFile();
+    }
 
 }
 

@@ -12,6 +12,11 @@ public class SourceFileReader {
     public SourceFileReader(String sourceFile) {
         this.sourceFile = new File(sourceFile);
     }
+
+    public SourceFileReader(File sourceFile) {
+        this.sourceFile = sourceFile;
+    }
+
     public String getSourceString() {
         readFile();
         return sourceString;

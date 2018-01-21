@@ -11,7 +11,7 @@ public class ClientTest extends TestCase {
 
     public void test_client_input() throws Exception {
         final String fileName = "fixture/pascal_source_file_test_input";
-        SourceFileReader sourceFileReader = new SourceFileReader(fileName);
+        SourceFileReader sourceFileReader = new SourceFileReader(getFile(fileName));
         String sourceString = sourceFileReader.getSourceString();
         final String expected = "program p09; " +
                 "var a,b,c:integer; " +
@@ -26,5 +26,9 @@ public class ClientTest extends TestCase {
                 "readln " +
                 "end.";
         assertEquals(expected, sourceString);
+    }
+
+    private String getFile(String filename) {
+        return getClass().getClassLoader().getResource(filename).getFile();
     }
 }
