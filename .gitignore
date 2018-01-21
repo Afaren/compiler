@@ -49,3 +49,5 @@ tokenListFilecompiler_homework.iml
 compiler.iml
 .idea
 .gradle
+build
+tokenListFile
